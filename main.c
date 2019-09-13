@@ -146,3 +146,12 @@ int main(void){
 	
 }//End of main
 
+//interrupt map
+//TIM4_IRQHandler() -- StepperMotor
+//TIM3_IRQHandler() -- DCMotor
+//TIM15_IRQHandler() -- Ultrsonic distance sensor
+//TIM16_IRQHandler() -- left encoder
+//TIM17_IRQHandler() -- right encoder
+//USART1_IRQHandler() -- RS232
+//TIM8_CC_IRQHandler() -- beeper
+//SysTick_Handler() -- delay
