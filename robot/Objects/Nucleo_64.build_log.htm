@@ -1,0 +1,88 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.25.2.0
+Copyright (C) 2018 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Weipeng Tang, aaa, LIC=KRMQD-8SCA2-SA2DJ-U37HM-JQC61-AX0PA
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.25.2.0
+Toolchain Path:  d:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 6 (build 750)
+Assembler:       Armasm.exe V5.06 update 6 (build 750)
+Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
+Library Manager: ArmAr.exe V5.06 update 6 (build 750)
+Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
+CPU DLL:         SARMCM3.DLL V5.25.2.0
+Dialog DLL:      DCM.DLL V1.17.1.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
+Dialog DLL:      TCM.DLL V1.35.1.0
+ 
+<h2>Project:</h2>
+D:\OneDrive\School\2019 Fall semester - L6\Engineering Project V\Robot_project\Nucleo_64.uvprojx
+Project File Date:  09/13/2019
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'Target 1'
+assembling startup_stm32f303xe.s...
+compiling Servo.c...
+compiling SysTick.c...
+compiling SysClock.c...
+SysClock.c(56): warning:  #177-D: variable "HSITrim"  was declared but never referenced
+  uint32_t HSITrim;
+SysClock.c: 1 warning, 0 errors
+compiling LED_Flash.c...
+compiling UDS.c...
+UDS.c(45): warning:  #61-D: integer operation result is out of range
+  	GPIO_PIN_MODE(UDS_TRIG_PORT, UDS_TRIG_PIN, AF);								//1. set trigger pin as alternate function mode
+UDS.c(45): warning:  #68-D: integer conversion resulted in a change of sign
+  	GPIO_PIN_MODE(UDS_TRIG_PORT, UDS_TRIG_PIN, AF);								//1. set trigger pin as alternate function mode
+UDS.c: 2 warnings, 0 errors
+compiling DCMotor.c...
+compiling main.c...
+compiling StepperMotor.c...
+compiling LCD.c...
+LCD.c(169): warning:  #1-D: last line of file ends without a newline
+  }
+LCD.c: 1 warning, 0 errors
+compiling Encoder.c...
+compiling UART.c...
+compiling Beeper.c...
+compiling utilities.c...
+utilities.c(171): warning:  #1-D: last line of file ends without a newline
+  }
+utilities.c: 1 warning, 0 errors
+compiling system_stm32f3xx.c...
+linking...
+Program Size: Code=17348 RO-data=988 RW-data=140 ZI-data=1708  
+FromELF: creating hex file...
+".\Objects\Nucleo_64.axf" - 0 Error(s), 5 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.4.0.pack
+                ARM.CMSIS.5.4.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.1.2
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F3xx_DFP.2.1.0.pack
+                Keil.STM32F3xx_DFP.2.1.0
+                STMicroelectronics STM32F3 Series Device Support and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_Target_1
+  d:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include
+  d:\Keil_v5\ARM\PACK\Keil\STM32F3xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F3xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.1.2
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
