@@ -123,10 +123,10 @@ main (int argc, char *argv[])
 	// device "/dev/ttyS0" - so assume this is the default
 
 	if (argc < 2) {
-		port = "/dev/ttyS0";
+		port = "/dev/ttyS1";
 		baud = 9600;
 	} else if (argc < 3) {
-		port = "/dev/ttyS0";
+		port = "/dev/ttyS1";
 		baud = atoi (argv[1]);
 	} else {
 		port = argv[2];
