@@ -73,10 +73,16 @@ int main(void){
 	
 	
 	while(1){
+		LCDclear();
+		LCDprintf("start receving...");
 		receive_cmd(input_buffer);
-		Delay_ms(100);
+		LCDclear();
+		LCDprintf("received something.");
+		Delay_ms(1000);
+		LCDclear();
 		LCDprintf(input_buffer);
-		Delay_ms(100);
+		Delay_ms(5000);
+		UARTprintf("Confirmed\n");
 	}
 	
 	

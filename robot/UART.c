@@ -163,10 +163,10 @@ void UARTputc(char cx){
 
 void USART1_IRQHandler(void){
 	receive(USART1, USART1_Buffer_Rx, &Rx1_Counter);									//receive a 8-bit character
-	UARTprintf("%c", USART1_Buffer_Rx[Rx1_Counter-1]);								//reflect the character back to terminal
-	if(USART1_Buffer_Rx[Rx1_Counter-1] == 0x0A){											//if a newline character was found
-		UARTprintf("%c", 0x0D);																					//add a carriage return to finish the CR+LF combo
-	}
+//	UARTprintf("%c", USART1_Buffer_Rx[Rx1_Counter-1]);								//reflect the character back to terminal
+//	if(USART1_Buffer_Rx[Rx1_Counter-1] == 0x0A){											//if a newline character was found
+//		UARTprintf("%c", 0x0D);																					//add a carriage return to finish the CR+LF combo
+//	}
 }
 
 void receive(USART_TypeDef *USARTx, uint8_t *buffer, volatile uint32_t *pCounter){
