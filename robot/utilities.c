@@ -15,6 +15,13 @@
 #define EnableInterrupts __asm__("ISB ; CPSIE I") 
 #define DisableInterrupts __asm__("CPSID I") 
 
+void upper(char string[]){
+	int i=0;
+	while(string[i]!='\0'){
+		string[i] = toupper(string[i]);
+		i++;
+	}
+}
 
 void receive_cmd(char *buffer){
 	while(UARTCheckEnter() != 1);  //wait for user input

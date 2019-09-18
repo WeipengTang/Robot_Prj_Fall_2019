@@ -67,6 +67,7 @@ struct instruction{
 
 typedef struct instruction Instruction;
 
+void upper(char string[]);
 void receive_cmd(char *buffer);
 uint8_t input_boolean_judge(char input, char expected_letter);
 void main_menu(char *buffer);
