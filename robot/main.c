@@ -81,8 +81,9 @@ int main(void){
 		Delay_ms(1000);
 		LCDclear();
 		LCDprintf(input_buffer);
+		upper(input_buffer);
 		Delay_ms(5000);
-		UARTprintf("Confirmed\n");
+		UARTprintf("Confirmed: %s\n", input_buffer);
 	}
 	
 	
