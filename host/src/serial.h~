@@ -1,0 +1,6 @@
+#ifndef _SERIAL_H
+#define _SERIAL_H
+
+int RS232Init (char *device, int baudrate);
+
+#endif
