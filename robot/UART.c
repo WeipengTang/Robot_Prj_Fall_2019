@@ -167,9 +167,6 @@ void UARTputs(char *str){
 	while(*str){
 		UARTputc(*str++);
 	}
-	str--;
-	if(*str == '\n')
-		UARTputc(0x0D);
 }
 
 void UARTputc(char cx){
@@ -178,11 +175,11 @@ void UARTputc(char cx){
 }
 
 void USART1_IRQHandler(void){
-	
+
 	//Recive raw message
 	receive(USART1, USART1_Buffer_Rx, &Rx1_Counter);//receive a 8-bit character
-
-	if(UARTCheckEnter()){//update instructions
+	
+	if(UARTCheckEnter()==1){//update instructions
 		update_instruction();
 	}
 }
