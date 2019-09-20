@@ -26,7 +26,7 @@
 //#define I_GAIN 1
 //#define GAIN_DIVISOR 2
 
-extern Instruction current_instructions;
+extern volatile Instruction current_instructions;
 extern volatile uint32_t left_period_width;			//location to read the left encoder period width
 extern volatile uint32_t right_period_width;		//location to read the right encoder period width
 

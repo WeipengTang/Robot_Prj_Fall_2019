@@ -146,32 +146,34 @@ main (int argc, char *argv[])
 	 * one second for the other side to send a response, 
 	 * and attempt to read something back
 	 */
+	//while(1){
+		printf ("Enter a string: ");
+		fgets (buf, 1000, stdin);
+		//buf[6] = '\n';
+		write (fd, buf, strlen(buf));
 
-	printf ("Enter a string: ");
-	fgets (buf, 1000, stdin);
-	write (fd, buf, strlen (buf));
+		sleep (1);
 
-	sleep (1);
+		printf ("reading ...\n");
+		memset (buf, 0, 1000);
+		x = 0;
+		while (x < 999) {
+			char ch;
 
-	printf ("reading ...\n");
-	memset (buf, 0, 1000);
-	x = 0;
-	while (x < 999) {
-		char ch;
+			// read one char at a time, and ignore
+			// read errors (the port is configured as 
+			// non-blocking, so we're not stuck waiting
+			// for a byte to arrive!
 
-		// read one char at a time, and ignore
-		// read errors (the port is configured as 
-		// non-blocking, so we're not stuck waiting
-		// for a byte to arrive!
-
-		if (read (fd, &ch, 1) != -1) {
-			if (ch == '\n')
-				break;
-			buf[x++] = ch;
-		}
-	}	/* end while */
-	printf ("got this from port: >>%s<<\n", buf);
-
+			if (read (fd, &ch, 1) != -1) {
+				if (ch == '\n')
+					break;
+				buf[x++] = ch;
+			}
+		}	/* end while */
+		printf ("got this from port: >>%s<<\n", buf);
+		
+	//}
 	// close the file handle for the serial device
 
 	close (fd);

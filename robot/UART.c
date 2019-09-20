@@ -8,12 +8,28 @@
 #include "SysTick.h"
 #include "UART.h"
 #include "LCD.h"
+#include "StepperMotor.h"
+#include "Servo.h"
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
+extern volatile Instruction current_instructions;
 static uint8_t USART1_Buffer_Rx[MAX_UART_BUFSIZ];
 static volatile uint32_t Rx1_Counter = 0;
-
+volatile uint8_t input_frame[INPUT_FRAME_SIZE]; //1st byte: 1 - special command  0 - data
+																 //2nd byte: type of data
+																 //					 1 - stepper motor target angle
+																 //					 2 - stepper motor action speed
+																 //					 3 - Left DC motor direction
+																 //					 4 - Left DC motor speed
+																 //					 5 - right DC motor direction
+																 //					 6 - right DC motor speed
+																 //					 7 - servo target angle
+																 //          type of command
+																 //					 1 - stepper motor homing
+																 //					 2 - rotate LCD display content
+																 //3th, 4th, 5th, 6th byte: real command parameters or data
 
 void UARTInit(void) {
 	
@@ -151,9 +167,6 @@ void UARTputs(char *str){
 	while(*str){
 		UARTputc(*str++);
 	}
-	str--;
-	if(*str == '\n')
-		UARTputc(0x0D);
 }
 
 void UARTputc(char cx){
@@ -162,11 +175,13 @@ void UARTputc(char cx){
 }
 
 void USART1_IRQHandler(void){
-	receive(USART1, USART1_Buffer_Rx, &Rx1_Counter);									//receive a 8-bit character
-//	UARTprintf("%c", USART1_Buffer_Rx[Rx1_Counter-1]);								//reflect the character back to terminal
-//	if(USART1_Buffer_Rx[Rx1_Counter-1] == 0x0A){											//if a newline character was found
-//		UARTprintf("%c", 0x0D);																					//add a carriage return to finish the CR+LF combo
-//	}
+
+	//Recive raw message
+	receive(USART1, USART1_Buffer_Rx, &Rx1_Counter);//receive a 8-bit character
+	
+	if(UARTCheckEnter()==1){//update instructions
+		update_instruction();
+	}
 }
 
 void receive(USART_TypeDef *USARTx, uint8_t *buffer, volatile uint32_t *pCounter){
@@ -186,6 +201,76 @@ void receive(USART_TypeDef *USARTx, uint8_t *buffer, volatile uint32_t *pCounter
 	}
 }
 
+void update_instruction(void){
+		char temp_buffer[50];
+		UARTString(temp_buffer);
+		for(uint8_t i=0; i<6; i++){
+			UARTprintf("%d: %c ||", i, temp_buffer[i]);
+			temp_buffer[i] -= 48;
+		}
+	
+		switch(temp_buffer[0]){		
+			case 0: //data
+				switch(temp_buffer[1]){			
+					case 1: //stepper motor target angle
+						current_instructions.stepper_target = (uint32_t)(framer_32bit(temp_buffer));
+						break;
+					case 2: //stepper motor action speed
+						current_instructions.stepper_speed = (uint8_t)(framer_8bit(temp_buffer));
+						break;
+					case 3: //left DC motor direction
+						current_instructions.DCM_Left_DIR = (int8_t)(framer_8bit(temp_buffer));
+						break;
+					case 4: //left DC motor speed
+						current_instructions.DCM_Left_SPD = (uint32_t)(framer_32bit(temp_buffer));
+						break;
+					case 5: //right DC motor direction
+						current_instructions.DCM_Right_DIR = (int8_t)(framer_8bit(temp_buffer));
+						break;
+					case 6:	//right DC motor speed
+						current_instructions.DCM_Right_SPD = (uint32_t)(framer_32bit(temp_buffer));
+						break;
+					case 7: //servo target angle
+						servoPosition((uint32_t)(framer_32bit(temp_buffer)));
+						break;
+				}
+				break;
+			case 1: //special command
+				switch((int)(temp_buffer[1])){				
+					case 1: //stepper motor homming
+						stepperHoming();
+						break;
+					case 2: //increment LCD content index
+						//LCD content list:
+						//1 - DC motor target speed
+						//2 - DC motor current speed
+						//3 - ultrasonic distance sensor 1
+					  //4 - ultrasonic distance sensor 2
+					  //5 - stepper motor angle
+						//6 - servo angle
+						if(current_instructions.LCD_index == 6)
+							current_instructions.LCD_index = 1;
+						else
+							current_instructions.LCD_index++;
+						break;
+				}
+				break;
+			default:
+				break;
+		}
+		Rx1_Counter = 0; //clear receive buffer
+		UARTprintf("Confirmed.\n");
+}
+uint32_t framer_32bit(char *buffer){
+	uint32_t temp = (uint32_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0xFFFF);
+	return (temp);
+}
+uint16_t framer_16bit(char *buffer){
+	return (uint16_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0x00FF);
+}
+uint8_t framer_8bit(char *buffer){
+	return (uint8_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0x000F);
+}
 
 int8_t UARTDequeue(void){
 	uint8_t temp;
@@ -222,6 +307,11 @@ void UARTString(char *cx){
 			cx++;
 		}
 		(*cx) = '\0';
-	
+}
+void UART_receive_frame(char *buffer){
+	uint8_t i;
+	for(i=0; i<6; i++){
+		buffer[i] = UARTDequeue();
+	}
 	
 }

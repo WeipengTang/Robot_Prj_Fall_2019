@@ -54,7 +54,6 @@
 //#define AFR(pin) AFR##(pin>>3)
 
 
-
 struct instruction{
 	uint32_t stepper_target;
 	uint8_t stepper_speed;
@@ -62,7 +61,7 @@ struct instruction{
 	uint32_t DCM_Left_SPD;
 	int8_t DCM_Right_DIR;
 	uint32_t DCM_Right_SPD;
-	
+	uint8_t LCD_index;
 };
 
 typedef struct instruction Instruction;
