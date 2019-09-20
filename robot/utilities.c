@@ -24,7 +24,7 @@ void upper(char string[]){
 }
 
 void receive_cmd(char *buffer){
-	while(UARTCheckEnter() != 1);  //wait for user input
+	//while(UARTCheckEnter() != 1);  //wait for user input
 	UARTString(buffer);
 }
 uint8_t input_boolean_judge(char input, char expected_letter){

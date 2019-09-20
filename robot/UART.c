@@ -12,6 +12,7 @@
 #include "Servo.h"
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
 extern volatile Instruction current_instructions;
 static uint8_t USART1_Buffer_Rx[MAX_UART_BUFSIZ];
@@ -177,13 +178,13 @@ void UARTputc(char cx){
 }
 
 void USART1_IRQHandler(void){
-
+	
 	//Recive raw message
 	receive(USART1, USART1_Buffer_Rx, &Rx1_Counter);//receive a 8-bit character
-	
-	if(Rx1_Counter == INPUT_FRAME_SIZE)//update instructions
+
+	if(UARTCheckEnter()){//update instructions
 		update_instruction();
-		
+	}
 }
 
 void receive(USART_TypeDef *USARTx, uint8_t *buffer, volatile uint32_t *pCounter){
@@ -204,35 +205,41 @@ void receive(USART_TypeDef *USARTx, uint8_t *buffer, volatile uint32_t *pCounter
 }
 
 void update_instruction(void){
-		uint32_t temp;
-		switch(UARTDequeue()){
+		char temp_buffer[50];
+		UARTString(temp_buffer);
+		for(uint8_t i=0; i<6; i++){
+			UARTprintf("%d: %c ||", i, temp_buffer[i]);
+			temp_buffer[i] -= 48;
+		}
+	
+		switch(temp_buffer[0]){		
 			case 0: //data
-				switch(UARTDequeue()){
+				switch(temp_buffer[1]){			
 					case 1: //stepper motor target angle
-						current_instructions.stepper_target = (uint32_t)(dequeue_32bit());
+						current_instructions.stepper_target = (uint32_t)(framer_32bit(temp_buffer));
 						break;
 					case 2: //stepper motor action speed
-						current_instructions.stepper_speed = (uint8_t)(dequeue_8bit());
+						current_instructions.stepper_speed = (uint8_t)(framer_8bit(temp_buffer));
 						break;
 					case 3: //left DC motor direction
-						current_instructions.DCM_Left_DIR = (int8_t)(dequeue_8bit());
+						current_instructions.DCM_Left_DIR = (int8_t)(framer_8bit(temp_buffer));
 						break;
 					case 4: //left DC motor speed
-						current_instructions.DCM_Left_SPD = (uint32_t)(dequeue_32bit());
+						current_instructions.DCM_Left_SPD = (uint32_t)(framer_32bit(temp_buffer));
 						break;
 					case 5: //right DC motor direction
-						current_instructions.DCM_Right_DIR = (int8_t)(dequeue_8bit());
+						current_instructions.DCM_Right_DIR = (int8_t)(framer_8bit(temp_buffer));
 						break;
 					case 6:	//right DC motor speed
-						current_instructions.DCM_Right_SPD = (uint32_t)(dequeue_32bit());
+						current_instructions.DCM_Right_SPD = (uint32_t)(framer_32bit(temp_buffer));
 						break;
 					case 7: //servo target angle
-						servoPosition((uint32_t)(dequeue_32bit()));
+						servoPosition((uint32_t)(framer_32bit(temp_buffer)));
 						break;
 				}
 				break;
 			case 1: //special command
-				switch(UARTDequeue()){
+				switch((int)(temp_buffer[1])){				
 					case 1: //stepper motor homming
 						stepperHoming();
 						break;
@@ -257,16 +264,16 @@ void update_instruction(void){
 		Rx1_Counter = 0; //clear receive buffer
 		UARTprintf("Confirmed.\n");
 }
-uint32_t dequeue_32bit(void){
-	return (uint32_t)(((UARTDequeue()<<24)|(UARTDequeue()<<16)|(UARTDequeue()<<8)|UARTDequeue())&0xFFFF);
+uint32_t framer_32bit(char *buffer){
+	uint32_t temp = (uint32_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0xFFFF);
+	return (temp);
 }
-uint16_t dequeue_16bit(void){
-	return (uint16_t)(((UARTDequeue()<<24)|(UARTDequeue()<<16)|(UARTDequeue()<<8)|UARTDequeue())&0x00FF);
+uint16_t framer_16bit(char *buffer){
+	return (uint16_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0x00FF);
 }
-uint8_t dequeue_8bit(void){
-	return (uint8_t)(((UARTDequeue()<<24)|(UARTDequeue()<<16)|(UARTDequeue()<<8)|UARTDequeue())&0x000F);
+uint8_t framer_8bit(char *buffer){
+	return (uint8_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0x000F);
 }
-
 
 int8_t UARTDequeue(void){
 	uint8_t temp;
@@ -303,6 +310,11 @@ void UARTString(char *cx){
 			cx++;
 		}
 		(*cx) = '\0';
-	
+}
+void UART_receive_frame(char *buffer){
+	uint8_t i;
+	for(i=0; i<6; i++){
+		buffer[i] = UARTDequeue();
+	}
 	
 }

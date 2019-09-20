@@ -34,10 +34,11 @@ int8_t UARTDequeue(void);
 int8_t UARTNotEmpty(void);
 int8_t UARTCheckEnter(void);
 void UARTString(char *cx);
-uint32_t dequeue_32bit(void);
-uint16_t dequeue_16bit(void);
-uint8_t dequeue_8bit(void);
+uint32_t framer_32bit(char *buffer);
+uint16_t framer_16bit(char *buffer);
+uint8_t framer_8bit(char *buffer);
 void update_instruction(void);
+void UART_receive_frame(char *buffer);
 
 
 #endif
