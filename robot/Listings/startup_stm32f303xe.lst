@@ -693,11 +693,12 @@ ARM Macro Assembler    Page 11
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=.\objects\startup_stm32f303xe.d -o.\objects\startup_stm32f303xe
-.o -I.\RTE\_Target_1 -Id:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include -
-Id:\Keil_v5\ARM\PACK\Keil\STM32F3xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F3xx
-\Include --predefine="__UVISION_VERSION SETA 525" --predefine="_RTE_ SETA 1" --
-predefine="STM32F303xE SETA 1" --list=.\listings\startup_stm32f303xe.lst startu
-p_stm32f303xe.s
+.o -I"C:\Users\Wtang7928\OneDrive\School\2019 Fall semester - L6\Engineering Pr
+oject V\Robot_project\robot\RTE" -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Co
+re\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32F3xx_DFP\2.1.0\Drivers\CMSIS\Device\
+ST\STM32F3xx\Include --predefine="__UVISION_VERSION SETA 521" --predefine="_RTE
+_ SETA 1" --predefine="STM32F303xE SETA 1" --list=.\listings\startup_stm32f303x
+e.lst startup_stm32f303xe.s
 
 
 

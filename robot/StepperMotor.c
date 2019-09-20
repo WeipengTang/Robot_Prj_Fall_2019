@@ -13,7 +13,7 @@
 
 static uint32_t stepperValue[8] = {0x8, 0xA, 0x2, 0x6, 0x4, 0x5, 0x1, 0x9};
 static uint32_t current_position = 185;
-extern Instruction current_instructions;
+extern volatile Instruction current_instructions;
 static uint32_t stepper_max_angle = 370;
 static uint32_t stepper_min_angle = 0;
 

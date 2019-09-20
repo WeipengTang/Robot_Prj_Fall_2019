@@ -31,17 +31,14 @@ extern volatile uint32_t left_period_width;			//location to read the left encode
 #define RIGHT_SPD_CMPS 197.352												//multiplier to calculate the right encoder speed
 extern volatile uint32_t right_period_width;		//location to read the right encoder period width
 
-Instruction current_instructions;								//declare global instruction set for all actions
+volatile Instruction current_instructions;								//declare global instruction set for all actions
 
 int main(void){
 	//Hardware initiation
 	System_Clock_Init();																	//Initiate system clock
 	SysTick_Initialize (719);															// interrup interval is 10us. 10us * 72MHz - 1 = 719. if clock is 68MHz, this number should be 679.
 	//flashLEDInit();																				//Initiate the flashing LED at PA5	
-	LCDinit();																						//Initate LCD display at PB12, PB13, PB4, PB5, PB6, PB7
-	LCDclear();
-	LCDprintf("Initializing...");
-	
+	LCDinit();																						//Initate LCD display at PB12, PB13, PB4, PB5, PB6, PB7	
 	StepperMotorInit();																		//Initate Stepper Motor
 	ServoInit();																					//Initate RC Servo
 	DCMotorInit();																				//Initiate DC Motor
@@ -52,7 +49,7 @@ int main(void){
 	beeperInit();																					//Initiate the beeper
 	
 	//Constants Initiation
-	char input_buffer[MAX_UART_BUFSIZ+1];									//buffer for RS232 communication
+	//char input_buffer[MAX_UART_BUFSIZ+1];									//buffer for RS232 communication
 	servoPosition(60);																		//default servo position
 	current_instructions.stepper_target = 90;							//default stepper motor target
 	current_instructions.stepper_speed = 2;								//default stepper motor speed
@@ -60,32 +57,20 @@ int main(void){
 	current_instructions.DCM_Left_SPD = 0;               //default left DC motor speed (duty cycle)
 	current_instructions.DCM_Right_DIR = 1;								//default right DC motor direction
 	current_instructions.DCM_Right_SPD = 0;							//default right DC motor speed
+	current_instructions.LCD_index = 0;                  //default LCD content index
 	
-	uint8_t camera_flag = FALSE;
-	uint8_t motor_flag = FALSE;
-	uint8_t servo_flag = FALSE;
-	uint8_t stepper_flag = FALSE;
-	uint8_t control_stepper_flag = FALSE;
+	//uint8_t camera_flag = FALSE;
+	//uint8_t motor_flag = FALSE;
+	//uint8_t servo_flag = FALSE;
+	//uint8_t stepper_flag = FALSE;
+	//uint8_t control_stepper_flag = FALSE;
 	
 	LCDclear();
 	LCDprintf("Hello World!");
-	Delay_ms(2000);
+	Delay_ms(1000);
 	
 	
-	while(1){
-		LCDclear();
-		LCDprintf("start receving...");
-		receive_cmd(input_buffer);
-		LCDclear();
-		LCDprintf("received something.");
-		Delay_ms(1000);
-		LCDclear();
-		LCDprintf(input_buffer);
-		upper(input_buffer);
-		Delay_ms(5000);
-		UARTprintf("Confirmed: %s\n", input_buffer);
-	}
-	
+	while(1);
 	
 }
 

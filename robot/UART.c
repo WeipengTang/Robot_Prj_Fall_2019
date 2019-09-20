@@ -8,12 +8,27 @@
 #include "SysTick.h"
 #include "UART.h"
 #include "LCD.h"
+#include "StepperMotor.h"
+#include "Servo.h"
 #include <stdio.h>
 #include <stdarg.h>
 
+extern volatile Instruction current_instructions;
 static uint8_t USART1_Buffer_Rx[MAX_UART_BUFSIZ];
 static volatile uint32_t Rx1_Counter = 0;
-
+volatile uint8_t input_frame[INPUT_FRAME_SIZE]; //1st byte: 1 - special command  0 - data
+																 //2nd byte: type of data
+																 //					 1 - stepper motor target angle
+																 //					 2 - stepper motor action speed
+																 //					 3 - Left DC motor direction
+																 //					 4 - Left DC motor speed
+																 //					 5 - right DC motor direction
+																 //					 6 - right DC motor speed
+																 //					 7 - servo target angle
+																 //          type of command
+																 //					 1 - stepper motor homing
+																 //					 2 - rotate LCD display content
+																 //3th, 4th, 5th, 6th byte: real command parameters or data
 
 void UARTInit(void) {
 	
@@ -162,11 +177,13 @@ void UARTputc(char cx){
 }
 
 void USART1_IRQHandler(void){
-	receive(USART1, USART1_Buffer_Rx, &Rx1_Counter);									//receive a 8-bit character
-//	UARTprintf("%c", USART1_Buffer_Rx[Rx1_Counter-1]);								//reflect the character back to terminal
-//	if(USART1_Buffer_Rx[Rx1_Counter-1] == 0x0A){											//if a newline character was found
-//		UARTprintf("%c", 0x0D);																					//add a carriage return to finish the CR+LF combo
-//	}
+
+	//Recive raw message
+	receive(USART1, USART1_Buffer_Rx, &Rx1_Counter);//receive a 8-bit character
+	
+	if(Rx1_Counter == INPUT_FRAME_SIZE)//update instructions
+		update_instruction();
+		
 }
 
 void receive(USART_TypeDef *USARTx, uint8_t *buffer, volatile uint32_t *pCounter){
@@ -184,6 +201,70 @@ void receive(USART_TypeDef *USARTx, uint8_t *buffer, volatile uint32_t *pCounter
 			(*pCounter) = 0;										//Circular buffer
 		}
 	}
+}
+
+void update_instruction(void){
+		uint32_t temp;
+		switch(UARTDequeue()){
+			case 0: //data
+				switch(UARTDequeue()){
+					case 1: //stepper motor target angle
+						current_instructions.stepper_target = (uint32_t)(dequeue_32bit());
+						break;
+					case 2: //stepper motor action speed
+						current_instructions.stepper_speed = (uint8_t)(dequeue_8bit());
+						break;
+					case 3: //left DC motor direction
+						current_instructions.DCM_Left_DIR = (int8_t)(dequeue_8bit());
+						break;
+					case 4: //left DC motor speed
+						current_instructions.DCM_Left_SPD = (uint32_t)(dequeue_32bit());
+						break;
+					case 5: //right DC motor direction
+						current_instructions.DCM_Right_DIR = (int8_t)(dequeue_8bit());
+						break;
+					case 6:	//right DC motor speed
+						current_instructions.DCM_Right_SPD = (uint32_t)(dequeue_32bit());
+						break;
+					case 7: //servo target angle
+						servoPosition((uint32_t)(dequeue_32bit()));
+						break;
+				}
+				break;
+			case 1: //special command
+				switch(UARTDequeue()){
+					case 1: //stepper motor homming
+						stepperHoming();
+						break;
+					case 2: //increment LCD content index
+						//LCD content list:
+						//1 - DC motor target speed
+						//2 - DC motor current speed
+						//3 - ultrasonic distance sensor 1
+					  //4 - ultrasonic distance sensor 2
+					  //5 - stepper motor angle
+						//6 - servo angle
+						if(current_instructions.LCD_index == 6)
+							current_instructions.LCD_index = 1;
+						else
+							current_instructions.LCD_index++;
+						break;
+				}
+				break;
+			default:
+				break;
+		}
+		Rx1_Counter = 0; //clear receive buffer
+		UARTprintf("Confirmed.\n");
+}
+uint32_t dequeue_32bit(void){
+	return (uint32_t)(((UARTDequeue()<<24)|(UARTDequeue()<<16)|(UARTDequeue()<<8)|UARTDequeue())&0xFFFF);
+}
+uint16_t dequeue_16bit(void){
+	return (uint16_t)(((UARTDequeue()<<24)|(UARTDequeue()<<16)|(UARTDequeue()<<8)|UARTDequeue())&0x00FF);
+}
+uint8_t dequeue_8bit(void){
+	return (uint8_t)(((UARTDequeue()<<24)|(UARTDequeue()<<16)|(UARTDequeue()<<8)|UARTDequeue())&0x000F);
 }
 
 

@@ -6,6 +6,7 @@
 #ifndef _UART_H
 #define _UART_H
 #define MAX_UART_BUFSIZ 50
+#define INPUT_FRAME_SIZE 6
 #include "stm32f303xe.h"
 
 #define RS232_TXD_PORT C
@@ -33,6 +34,10 @@ int8_t UARTDequeue(void);
 int8_t UARTNotEmpty(void);
 int8_t UARTCheckEnter(void);
 void UARTString(char *cx);
+uint32_t dequeue_32bit(void);
+uint16_t dequeue_16bit(void);
+uint8_t dequeue_8bit(void);
+void update_instruction(void);
 
 
 #endif

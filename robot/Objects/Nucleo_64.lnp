@@ -1,4 +1,4 @@
---cpu=Cortex-M4.fp
+--cpu Cortex-M4.fp
 ".\objects\startup_stm32f303xe.o"
 ".\objects\sysclock.o"
 ".\objects\system_stm32f3xx.o"
@@ -15,6 +15,6 @@
 ".\objects\beeper.o"
 ".\objects\utilities.o"
 --strict --scatter ".\Objects\Nucleo_64.sct"
---summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\Listings\Nucleo_64.map" -o .\Objects\Nucleo_64.axf
