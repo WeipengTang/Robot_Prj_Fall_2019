@@ -3,14 +3,19 @@
 #include <unistd.h>
 #include <string.h>
 #include "serial.h"
+#include "joystick.h"
 
 int main (void){
 
 	UARTInit();
-	char out_buf[100];
-	char in_buf[100];
+	joystick_init ();
+	//char out_buf[100];
+	//char in_buf[100];
 
+	joystick_loop ();
 
+	
+/*
 	while(1){
 		printf ("Enter a string: ");
 		fgets (out_buf, 100, stdin);
@@ -20,12 +25,14 @@ int main (void){
 
 		printf ("reading ...\n");
 		memset (in_buf, 0, 100);
-		UARTReceive (in_buf, 100)
+		UARTReceive (in_buf, 100);
 		
 		printf ("got this from port: >>%s<<\n", in_buf);
 	}
 	// close the file handle for the serial device
-
+*/
+	
+	
 
 	return 0;
 }	/* end main */

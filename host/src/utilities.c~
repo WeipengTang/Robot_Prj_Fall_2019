@@ -1,0 +1,10 @@
+#include <stdlib.h>
+
+
+void data_32bit_convertor(unsigned char *instruction, int value){
+	instruction[2] = (unsigned char)(((value&0xF000)>>24)&0x000F);
+	instruction[3] = (unsigned char)(((value&0x0F00)>>16)&0x000F);
+	instruction[4] = (unsigned char)(((value&0x00F0)>>8)&0x000F);
+	instruction[5] = (unsigned char)(value&0x000F);
+
+}

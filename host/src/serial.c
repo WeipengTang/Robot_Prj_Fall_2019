@@ -11,6 +11,8 @@
 
 // we need the following for serial port support ...
 #include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <termios.h>
 #include <string.h>
@@ -33,7 +35,7 @@
 
 static int fd;
 
-void UARTInit(void){
+int UARTInit(void){
 	
 char port[] = "/dev/ttyUSB0";
 int baud = 9600;
@@ -45,7 +47,7 @@ int baud = 9600;
 		return 1;
 	}	/* endif */
 	printf ("successful open of %s with baud rate %d\n", port, baud);
-
+	return 0;
 }
 
 int RS232Init (char *device, int baudrate){
@@ -106,11 +108,11 @@ int RS232Init (char *device, int baudrate){
 	return fd;
 }	/* end RS232Init */
 
-void UARTSend(char *buffer, int len){
+void UARTSend(unsigned char *buffer, int len){
 	write(fd, buffer, len);
 }
 
-void UARTReceive(char *buffer, int maxLen){
+void UARTReceive(unsigned char *buffer, int maxLen){
 	int x = 0;
 		while (x < maxLen) {
 			char ch;

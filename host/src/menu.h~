@@ -1,0 +1,11 @@
+#ifndef _MENU_H_
+#define _MENU_H_
+
+void menu_loop(void);
+void get_user_input(char* buffer);
+void 32bit_data_convertor(int value);
+void send_data(char* data);
+void send_command(char option);
+
+
+#endif
