@@ -46,7 +46,12 @@ control_functions.o: \
  /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /usr/include/strings.h \
+ /usr/include/strings.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h \
  /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/control_functions.h \
  /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/utilities.h
@@ -156,6 +161,18 @@ control_functions.o: \
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
 /usr/include/strings.h:
+
+/usr/include/unistd.h:
+
+/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
+
+/usr/include/x86_64-linux-gnu/bits/environments.h:
+
+/usr/include/x86_64-linux-gnu/bits/confname.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_core.h:
 
 /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h:
 

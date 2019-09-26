@@ -110,7 +110,7 @@ void joystick_init(void)
 	
     if (js == -1)
         perror("Could not open joystick");
-   
+	   
 }
 
 void joystick_loop(void){
@@ -124,13 +124,13 @@ void joystick_loop(void){
                 //printf("Button %u %s\n", event.number, event.value ? "pressed" : "released");
 				if(event.value == 1){
 					switch(event.number){
-						case 3:
+						case 2:
 							camera_up ();
 							break;
 						case 0:
 							camera_down();
 							break;
-						case 2:
+						case 3:
 							camera_left ();
 							break;
 						case 1:
@@ -138,6 +138,9 @@ void joystick_loop(void){
 							break;
 						case 5:
 							stepper_home ();
+							break;
+						case 12:
+							robot_move_simple (1, 0);
 							break;
 						default:
 							break;
@@ -147,7 +150,22 @@ void joystick_loop(void){
             case JS_EVENT_AXIS:
                 axis = get_axis_state(&event, axes);
                 if (axis < 3)
-                    printf("Axis %zu at (%6d, %6d)\n", axis, axes[axis].x, axes[axis].y);
+                    //printf("Axis %zu at (%6d, %6d)\n", axis, axes[axis].x, axes[axis].y);
+					switch(axis){
+						case 0: //left joystick
+							//robot_forward_backward(axes[axis].y);
+							robot_left_right(axes[axis].x);
+							break;
+						case 1: //right joystick x-axis and L2
+							//	robot_left_right(axes[axis].y);
+							robot_move_simple (-1, axes[axis].x);
+							break;
+						case 2: //right joystick y-axis and R2
+							robot_move_simple (1, axes[axis].y);
+							break;
+						default:
+							break;
+					}
                 break;
             default:
                 break;

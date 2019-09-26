@@ -8,3 +8,22 @@ void data_32bit_convertor(unsigned char *instruction, int value){
 	instruction[5] = (unsigned char)(value&0x000000FF);
 
 }
+
+unsigned int mapValue(unsigned int minIn, unsigned int maxIn, unsigned int minOut, unsigned int maxOut, unsigned value){
+	
+	//to ensure input not exceed input limits
+	if(value < minIn) value = minIn;
+	if(value > maxIn) value = maxIn;
+	
+	return ((value - minIn)*(maxOut - minOut)/(maxIn - minIn) + minOut);
+	
+}
+
+unsigned int abs_value(int value){
+
+if(value < 0)
+		return value*(-1);
+else
+		return value;
+
+}
