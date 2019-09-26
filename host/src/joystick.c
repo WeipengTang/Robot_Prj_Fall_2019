@@ -1,0 +1,178 @@
+/**
+ * Author: Jason White
+ *
+ * Description:
+ * Reads joystick/gamepad events and displays them.
+ *
+ * Compile:
+ * gcc joystick.c -o joystick
+ *
+ * Run:
+ * ./joystick [/dev/input/jsX]
+ *
+ * See also:
+ * https://www.kernel.org/doc/Documentation/input/joystick-api.txt
+ */
+#include <fcntl.h>
+#include <stdio.h>
+#include <linux/joystick.h>
+#include <unistd.h>
+#include "joystick.h"
+#include "control_functions.h"
+
+/**
+ * Reads a joystick event from the joystick device.
+ *
+ * Returns 0 on success. Otherwise -1 is returned.
+ */
+
+const char *device;
+int js;
+struct js_event event;
+struct axis_state axes[3] = {0};
+size_t axis;
+
+
+
+int read_event(int fd, struct js_event *event)
+{
+    ssize_t bytes;
+
+    bytes = read(fd, event, sizeof(*event));
+
+    if (bytes == sizeof(*event))
+        return 0;
+
+    /* Error, could not read full event. */
+    return -1;
+}
+
+/**
+ * Returns the number of axes on the controller or 0 if an error occurs.
+ */
+size_t get_axis_count(int fd)
+{
+    __u8 axes;
+
+    if (ioctl(fd, JSIOCGAXES, &axes) == -1)
+        return 0;
+
+    return axes;
+}
+
+/**
+ * Returns the number of buttons on the controller or 0 if an error occurs.
+ */
+size_t get_button_count(int fd)
+{
+    __u8 buttons;
+    if (ioctl(fd, JSIOCGBUTTONS, &buttons) == -1)
+        return 0;
+
+    return buttons;
+}
+
+/**
+ * Current state of an axis.
+ */
+
+
+/**
+ * Keeps track of the current axis state.
+ *
+ * NOTE: This function assumes that axes are numbered starting from 0, and that
+ * the X axis is an even number, and the Y axis is an odd number. However, this
+ * is usually a safe assumption.
+ *
+ * Returns the axis that the event indicated.
+ */
+size_t get_axis_state(struct js_event *event, struct axis_state axes[3])
+{
+    size_t axis = event->number / 2;
+
+    if (axis < 3)
+    {
+        if (event->number % 2 == 0)
+            axes[axis].x = event->value;
+        else
+            axes[axis].y = event->value;
+    }
+
+    return axis;
+}
+
+void joystick_init(void)
+{
+    device = "/dev/input/js2";
+
+    js = open(device, O_RDONLY);
+	//js = open(device, O_NONBLOCK);
+	
+    if (js == -1)
+        perror("Could not open joystick");
+	   
+}
+
+void joystick_loop(void){
+	/* This loop will exit if the controller is unplugged. */
+	
+    while (read_event(js, &event) == 0)
+    {
+        switch (event.type)
+        {
+            case JS_EVENT_BUTTON:
+                //printf("Button %u %s\n", event.number, event.value ? "pressed" : "released");
+				if(event.value == 1){
+					switch(event.number){
+						case 2:
+							camera_up ();
+							break;
+						case 0:
+							camera_down();
+							break;
+						case 3:
+							camera_left ();
+							break;
+						case 1:
+							camera_right();
+							break;
+						case 5:
+							stepper_home ();
+							break;
+						case 12:
+							robot_move_simple (1, 0);
+							break;
+						default:
+							break;
+					}
+				}
+                break;
+            case JS_EVENT_AXIS:
+                axis = get_axis_state(&event, axes);
+                if (axis < 3)
+                    //printf("Axis %zu at (%6d, %6d)\n", axis, axes[axis].x, axes[axis].y);
+					switch(axis){
+						case 0: //left joystick
+							//robot_forward_backward(axes[axis].y);
+							robot_left_right(axes[axis].x);
+							break;
+						case 1: //right joystick x-axis and L2
+							//	robot_left_right(axes[axis].y);
+							robot_move_simple (-1, axes[axis].x);
+							break;
+						case 2: //right joystick y-axis and R2
+							robot_move_simple (1, axes[axis].y);
+							break;
+						default:
+							break;
+					}
+                break;
+            default:
+                break;
+        }
+    }
+	
+	
+	close(js);
+
+}

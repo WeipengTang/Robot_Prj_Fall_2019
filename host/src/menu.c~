@@ -1,0 +1,223 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "menu.h"
+#include "serial.h"
+#define TRUE 1
+#define FALSE 0
+
+char instruction_frame[7];
+instruction_frame[6] = '\0';
+//1st byte: 1 - special command  0 - data
+//2nd byte: type of data
+//					 1 - stepper motor target angle
+//					 2 - stepper motor action speed
+//					 3 - Left DC motor direction
+//					 4 - Left DC motor speed
+//					 5 - right DC motor direction
+//					 6 - right DC motor speed
+//					 7 - servo target angle
+//          type of command
+//					 1 - stepper motor homing
+//					 2 - rotate LCD display content
+//3th, 4th, 5th, 6th byte: real command parameters or data
+
+
+void menu_loop(void){
+	 
+	char user_input_buffer[100];
+	int camera_flag = 0;
+	int servo_flag = 0;
+	int stepper_flag = 0;
+	int control_stepper_flag = 0;
+	int motor_flag = 0;
+	int left_motor_dir_flag = 0;
+	int right_motor_dir_flag = 0;
+
+	while(1){
+		printf("*****Main Menu*****\n");
+		printf("1 - Camera module\n");
+		printf("2 - DC motor module\n");
+		printf("Choose one of above options: ");
+		memset(user_input_buffer, 0, sizeof(user_input_buffer));
+		fgets(user_input_buffer, sizeof(user_input_buffer), STDIN);			
+		switch(atoi(user_input_buffer)){
+			case 1:
+				while(camera_flag != TRUE){
+					printf("\n*****Camera module*****\n");
+					printf("1 - Servo\n");
+					printf("2 - Stepper Motor\n");
+					printf("3 - Back to previous menu\n");
+					printf("Choose one of above options: ");
+					memset(user_input_buffer, 0, sizeof(user_input_buffer));
+					fgets(user_input_buffer, sizeof(user_input_buffer), STDIN);	
+					switch(atoi(user_input_buffer)){
+						case 1:
+							instruction_frame[0] = '0';
+							instruction_frame[1] = '7';
+							while(servo_flag != TRUE){
+								printf("\n*****Servo*****\n");
+								printf("Enter Servo angle:(75 to 180)\n");
+								get_user_input(user_input_buffer);	
+								send_data(user_input_buffer);
+								
+								UARTprintf("Back to previous menu?[Y/N]\n");
+								get_user_input(user_input_buffer);	
+								if(user_input_buffer[0] == 'Y' || user_input_buffer[0] == 'y')
+									servo_flag = TRUE; 
+							}
+							servo_flag = FALSE;
+							break;		
+						case 2:
+							while(stepper_flag != TRUE){
+								printf("\n*****Stepper Motor*****\n");
+								printf("1 - Control stepper motor\n");
+								printf("2 - Recenter stepper motor\n");
+								printf("3 - Back to previous menu\n");
+								printf("Choose one of above options: ");
+								get_user_input(user_input_buffer);
+								switch(atoi(user_input_buffer)){
+									case 1:
+										while(control_stepper_flag != TRUE){
+											instruction_frame[0] = '0';
+											
+											printf("\n*****Control stepper motor****\n");
+											printf("Enter stepper speed:(1 or 2) \n");
+											instruction_frame[1] = '2';
+											get_user_input(user_input_buffer);
+											send_data(user_input_buffer);
+				
+											printf("Enter stepper angle:(0 to 180)\n");
+											instruction_frame[1] = '1';
+											get_user_input(user_input_buffer);
+											send_data(user_input_buffer);
+											
+											UARTprintf("Back to previous menu?[Y/N]\n");
+											get_user_input(user_input_buffer);
+											if(input_buffer[0] == 'Y' || input_buffer[0] == 'y')
+												control_stepper_flag = TRUE; 
+										}
+										control_stepper_flag = FALSE; 
+										break;
+									case 2:
+										printf("Start stepper motor recenter sequence.\n");
+										send_command('1');
+										printf("Recentering finish.\n");
+										break;
+									case 3:
+										stepper_flag = TRUE;
+										break;
+									default:
+										printf("Invalid command, please try again.\n");
+										break;
+								}
+							}
+							stepper_flag = FALSE; 
+							break;
+						case 3:
+							camera_flag = TRUE;
+							break;
+						default:
+							printf("Invalid command, please try again.\n");
+							break;
+						
+					}
+				}
+				camera_flag = FALSE;
+				break;
+			case 2:
+				while(motor_flag != TRUE){
+				printf("\n*****DC Motor*****\n");
+				instruction_frame[0] = '0';
+				//get left motor direction command
+					while(left_motor_dir_flag != TRUE){
+					instruction_frame[1] = '3';
+					printf("Left motor direction:(F or B) \n");
+					get_user_input(user_input_buffer);
+					if(user_input_buffer[0] == 'F' || user_input_buffer[0] == 'f'){
+						data_32bit_convertor(1);
+						UARTSend (instruction_frame, sizeof(instruction_frame));
+						left_motor_dir_flag = TRUE;
+					}
+					else if(input_buffer[0] == 'B' || input_buffer[0] == 'b'){
+						data_32bit_convertor(-1);
+						UARTSend (instruction_frame, sizeof(instruction_frame));
+						left_motor_dir_flag = TRUE;
+					}
+					else
+						printf("Invalid command, please try again.\n");
+					}
+					left_motor_dir_flag = FALSE;
+					
+				//get right motor direction command
+					while(right_motor_dir_flag != TRUE){
+					instruction_frame[1] = '5';
+					printf("Right motor direction:(F or B) \n");
+					get_user_input(user_input_buffer);
+					if(user_input_buffer[0] == 'F' || user_input_buffer[0] == 'f'){
+						data_32bit_convertor(1);
+						UARTSend (instruction_frame, sizeof(instruction_frame));
+						right_motor_dir_flag = TRUE;
+					}
+					else if(input_buffer[0] == 'B' || input_buffer[0] == 'b'){
+						data_32bit_convertor(-1);
+						UARTSend (instruction_frame, sizeof(instruction_frame));
+						right_motor_dir_flag = TRUE;
+					}
+					else
+						printf("Invalid command, please try again.\n");
+					}
+					right_motor_dir_flag = FALSE;
+					
+				//get left motor speed command
+				printf("Left motor speed:(0 to 100) \n");
+				instruction_frame[1] = '4';
+				get_user_input(user_input_buffer);
+				send_data(user_input_buffer);	
+					
+				//get right motor speed command
+				printf("Right motor speed:(0 to 100) \n");
+				instruction_frame[1] = '6';
+				get_user_input(user_input_buffer);
+				send_data(user_input_buffer);	
+				
+				//ask user whether want to back to previous menu or stay
+				printf("Back to previous menu?[Y/N]\n");
+				get_user_input(user_input_buffer);
+				if(user_input_buffer[0] == 'Y' || user_input_buffer[0] == 'y')
+					motor_flag = TRUE; 
+				}
+				motor_flag = FALSE; //reset flag
+				break;
+			default:
+				printf("Invalid command, please try again.\n");
+				break;
+				
+		}
+
+		printf("\n");
+	}
+
+}
+void data_32bit_convertor(int value){
+	instruction_frame[2] = (char)(((value&0xF000)>>24)&0x000F);
+	instruction_frame[3] = (char)(((value&0x0F00)>>16)&0x000F);
+	instruction_frame[4] = (char)(((value&0x00F0)>>8)&0x000F);
+	instruction_frame[5] = (char)(value&0x000F);
+
+}
+void get_user_input(char* buffer){
+	memset(buffer, 0, sizeof(buffer));
+	fgets(buffer, sizeof(buffer), stdin);	
+
+}
+
+void send_data(char* data){
+		    
+	data_32bit_convertor(atoi(data));
+	UARTSend (instruction_frame, sizeof(instruction_frame));
+}
+void send_command(char option){
+	instruction_frame[0] = '1';
+	instruction_frame[1] = '1';
+	UARTSend (instruction_frame, sizeof(instruction_frame));
+}

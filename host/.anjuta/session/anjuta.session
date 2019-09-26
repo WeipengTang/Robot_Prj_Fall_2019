@@ -2,23 +2,23 @@
 Maximized=1
 Geometry=1853x920+67+27
 
-[Execution]
-Program arguments=
-Program uri=../../Debug/src/host_control
-Run in terminal=2
-Working directories=../../.
-
 [File Loader]
-Files=../../src/serial.c#17%%%../../src/main.c#23%%%../../src/serial.h#5
+Files=../../src/serial.c#17%%%../../src/main.c#4%%%../../src/serial.h#8%%%../../src/utilities.c#22%%%../../src/utilities.h#6%%%../../src/control_functions.c#260%%%../../src/control_functions.h#14%%%../../src/joystick.c#135
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+
+[Execution]
+Program uri=../../Debug/src/host_control
+Run in terminal=2
+Working directories=../../.
 
 [Project Manager]
 Shortcut=host//src//host_control
 Expand=host%%%host//src%%%host//src//host_control
 
 [Debugger]
+Breakpoint=1:../../src/control_functions.c:45:0:%%%1:../../src/control_functions.c:56:0:
 Stop at beginning=2
 
 [Build]

@@ -101,7 +101,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_host_control_OBJECTS = main.$(OBJEXT) serial.$(OBJEXT)
+am_host_control_OBJECTS = main.$(OBJEXT) serial.$(OBJEXT) \
+	joystick.$(OBJEXT) utilities.$(OBJEXT) \
+	control_functions.$(OBJEXT)
 host_control_OBJECTS = $(am_host_control_OBJECTS)
 host_control_DEPENDENCIES =
 AM_V_lt = $(am__v_lt_$(V))
@@ -331,7 +333,13 @@ AM_CFLAGS = \
 host_control_SOURCES = \
 	main.c \
 	serial.c \
-	serial.h
+	serial.h \
+	joystick.c \
+	joystick.h \
+	utilities.c \
+	control_functions.h \
+	control_functions.c \
+	utilities.h
 
 host_control_LDFLAGS = 
 host_control_LDADD = 
@@ -428,8 +436,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/control_functions.Po
+include ./$(DEPDIR)/joystick.Po
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/serial.Po
+include ./$(DEPDIR)/utilities.Po
 
 .c.o:
 	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
