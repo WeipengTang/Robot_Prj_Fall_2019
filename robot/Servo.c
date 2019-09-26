@@ -7,6 +7,8 @@
 #define MAX_SERVO_ANGLE 150
 #define MIN_SERVO_ANGLE 40
 
+volatile uint32_t servo_angle_info;
+
 void ServoInit(void){
 	
 	//Pin assignment 
@@ -69,6 +71,7 @@ void servoPosition(uint32_t angle){
 	if(angle < MIN_SERVO_ANGLE)
 		angle = MIN_SERVO_ANGLE;
 	
+	servo_angle_info = angle;
 	
 	uint32_t temp = ((angle/2 + 30)*ARR_NUM);
 	

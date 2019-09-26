@@ -14,6 +14,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
+extern volatile uint32_t servo_angle_info;
 extern volatile Instruction current_instructions;
 static uint8_t USART1_Buffer_Rx[MAX_UART_BUFSIZ];
 static volatile uint32_t Rx1_Counter = 0;
@@ -204,10 +205,6 @@ void receive(USART_TypeDef *USARTx, uint8_t *buffer, volatile uint32_t *pCounter
 void update_instruction(void){
 		char temp_buffer[50];
 		UARTString(temp_buffer);
-		for(uint8_t i=0; i<6; i++){
-			UARTprintf("%d: %c ||", i, temp_buffer[i]);
-			temp_buffer[i] -= 48;
-		}
 	
 		switch(temp_buffer[0]){		
 			case 0: //data
@@ -239,6 +236,14 @@ void update_instruction(void){
 				switch((int)(temp_buffer[1])){				
 					case 1: //stepper motor homming
 						stepperHoming();
+						UARTprintf("$%d$%d$%d$%d$%d$%d$%d$%d\n", servo_angle_info, 
+																									 current_instructions.stepper_target, 
+																									 current_instructions.stepper_speed,
+																									 current_instructions.DCM_Left_DIR,
+																									 current_instructions.DCM_Left_SPD,
+																									 current_instructions.DCM_Right_DIR,
+																									 current_instructions.DCM_Right_SPD,
+																									 current_instructions.LCD_index);
 						break;
 					case 2: //increment LCD content index
 						//LCD content list:
@@ -259,17 +264,17 @@ void update_instruction(void){
 				break;
 		}
 		Rx1_Counter = 0; //clear receive buffer
-		UARTprintf("Confirmed.\n");
+		//UARTprintf("Confirmed.\n");
 }
 uint32_t framer_32bit(char *buffer){
-	uint32_t temp = (uint32_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0xFFFF);
+	uint32_t temp = (uint32_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0xFFFFFFFF);
 	return (temp);
 }
 uint16_t framer_16bit(char *buffer){
-	return (uint16_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0x00FF);
+	return (uint16_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0x0000FFFF);
 }
 uint8_t framer_8bit(char *buffer){
-	return (uint8_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0x000F);
+	return (uint8_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0x000000FF);
 }
 
 int8_t UARTDequeue(void){
