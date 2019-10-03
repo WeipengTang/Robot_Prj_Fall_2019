@@ -16,3 +16,4 @@
 .\objects\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 .\objects\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

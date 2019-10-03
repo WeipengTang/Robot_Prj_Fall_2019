@@ -78,13 +78,5 @@ void servoPosition(uint32_t angle){
 	TIM2->CCR4 = temp/1000;																												//Change PWM duty cycle. Set duty cycle based on the required angle
 	
 }
-uint32_t mapValue(uint32_t minIn, uint32_t maxIn, uint32_t minOut, uint32_t maxOut, uint32_t value){
-	
-	//to ensure input not exceed input limits
-	if(value < minIn) value = minIn;
-	if(value > maxIn) value = maxIn;
-	
-	return ((value - minIn)*(maxOut - minOut)/(maxIn - minIn) + minOut);
-	
-}
+
 

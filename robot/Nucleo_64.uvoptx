@@ -166,9 +166,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>264</LineNumber>
+          <LineNumber>247</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134232576</Address>
+          <Address>134233006</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -177,44 +177,28 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>.\UART.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Nucleo_64\UART.c\264</Expression>
+          <Expression>\\Nucleo_64\UART.c\247</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>185</LineNumber>
+          <LineNumber>140</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134230322</Address>
+          <Address>134232794</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\UART.c</Filename>
+          <Filename>.\StepperMotor.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Nucleo_64\UART.c\185</Expression>
+          <Expression>\\Nucleo_64\StepperMotor.c\140</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>183</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\UART.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>186</LineNumber>
+          <LineNumber>250</LineNumber>
           <EnabledFlag>1</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -688,6 +672,30 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\utilities.c</PathWithFileName>
       <FilenameWithoutPath>utilities.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>30</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\TaskManager.c</PathWithFileName>
+      <FilenameWithoutPath>TaskManager.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>31</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\TaskManager.h</PathWithFileName>
+      <FilenameWithoutPath>TaskManager.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

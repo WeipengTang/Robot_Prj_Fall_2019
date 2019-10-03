@@ -12,11 +12,10 @@
 #include "SysTick.h"
 #define PRESCALER_NUM 899
 #define ARR_NUM 7999
-#define PRESCALER_TIM3 799																	
-#define ARR_TIM3 35999
+#define PRESCALER_TIM3 899																	
+#define ARR_TIM3 799
 #define MCU_CLK 72000000
-#define MAX_VANE_FREQ 1620
-#define MIN_VANE_FREQ 1030
+
 //#define FEEDBACK_SCALE_FACTOR 16777216
 //#define SENSOR_GAIN 1716
 //#define STUPID_SPEED_ERROR 100
@@ -112,7 +111,7 @@ void DCMotorInit(void){
 	//set pre-scaler.72MHz/(899+1) = 80KHz.
 	TIM3->PSC = PRESCALER_TIM3;
 	
-	//set counter period.80KHz/(7999+1) = 10Hz.																																					 
+	//set counter period.80KHz/(799+1) = 100Hz.																																					 
 	TIM3->ARR = ARR_TIM3;
 	
 	//Select Channel 1 as output																													   
@@ -136,7 +135,7 @@ void DCMotorInit(void){
 	//Enable capture/compare 1 interrupt
 	SET_BITS(TIM3->DIER, TIM_DIER_CC1IE);
 	
-	//Enable timer 4
+	//Enable timer 3
 	TIM3->CR1 |= TIM_CR1_CEN;
 	/********************************Enable Interrupt****************************************/
 	//Set the interrupt priority of TIM3_IRQn 
@@ -242,53 +241,4 @@ uint32_t speedControl(uint32_t target_speed, uint32_t PWM, int32_t current_perio
 }
 
 
-
-
-//void TIM3_IRQHandler(void){
-//	
-//	static int32_t leftSpeedErrorIntegral;
-//	static int32_t rightSpeedErrorIntegral;
-//	static uint32_t left_PWM;
-//	static uint32_t right_PWM;
-//	
-//	if(((TIM3->SR & TIM_SR_CC1IF) != 0)){											//Check if the CC1 interrupt flag is set
-//	
-//	//left_PWM = controlLawFunction(leftSpeedErrorIntegral, left_PWM, current_instructions.DCM_Left_SPD, left_period_width);
-//	//right_PWM = controlLawFunction(rightSpeedErrorIntegral, right_PWM, current_instructions.DCM_Right_SPD, right_period_width);
-//	
-//	runDCMotor(current_instructions.DCM_Left_DIR, left_PWM, current_instructions.DCM_Right_DIR, right_PWM);
-//	CLR_BITS(TIM3->SR, TIM_SR_CC1IF);												//clear the flag	
-//	}
-//}
-//uint32_t controlLawFunction(int32_t speedErrorIntegral, uint32_t PWM, uint32_t setSpeed, uint32_t encoderVaneWidth){
-//	 
-//	
-//	
-//	
-//	 //calculate error terms
-//	 int32_t speedError = setSpeed*SENSOR_GAIN - FEEDBACK_SCALE_FACTOR/encoderVaneWidth*720000;
-//	 int32_t driveValue;
-//	 
-//	 	//Check for stupid speed error
-//	if((speedError < STUPID_SPEED_ERROR) && (speedError > -STUPID_SPEED_ERROR)){
-//		
-//		//update integral term but only if drive is not on the rail
-//		if(((PWM == MIN_DRIVE_VALUE) && (speedError > 0)) || ((PWM == MAX_DRIVE_VALUE) && (speedError < 0)) || ((PWM > MIN_DRIVE_VALUE) && (PWM < MAX_DRIVE_VALUE)))
-//			speedErrorIntegral += speedError;
-//		
-//		//Calculate control law
-//		driveValue = ((speedError * P_GAIN) + (speedErrorIntegral * I_GAIN))/GAIN_DIVISOR;
-//		
-//		//Limit the controller output to range of PWM
-//		if(driveValue > MAX_DRIVE_VALUE)
-//			driveValue = MAX_DRIVE_VALUE;
-//		else if(driveValue < MIN_DRIVE_VALUE)
-//			driveValue = MIN_DRIVE_VALUE;
-//		
-//		return (PWM + driveValue);
-//	}
-//	else //if stupid error happens, keep the current PWM
-//		return PWM;
-//	 
-// }
 

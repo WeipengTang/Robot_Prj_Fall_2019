@@ -57,6 +57,7 @@
 struct instruction{
 	uint32_t stepper_target;
 	uint8_t stepper_speed;
+	uint32_t servo_angle;
 	int8_t DCM_Left_DIR;
 	uint32_t DCM_Left_SPD;
 	int8_t DCM_Right_DIR;
@@ -76,4 +77,5 @@ void stepper_motor_menu(char *buffer);
 void stepper_motor_control_menu(char *buffer, Instruction* current_instructions);
 void stepper_recenter_menu(void);
 void dc_motor_control_menu(char *input_buffer, Instruction* current_instructions);
+uint32_t mapValue(uint32_t minIn, uint32_t maxIn, uint32_t minOut, uint32_t maxOut, uint32_t value);
 #endif

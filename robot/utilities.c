@@ -176,3 +176,12 @@ UARTprintf("Back to previous menu?[Y/N]\n");
 receive_cmd(input_buffer);
 	
 }
+uint32_t mapValue(uint32_t minIn, uint32_t maxIn, uint32_t minOut, uint32_t maxOut, uint32_t value){
+	
+	//to ensure input not exceed input limits
+	if(value < minIn) value = minIn;
+	if(value > maxIn) value = maxIn;
+	
+	return ((value - minIn)*(maxOut - minOut)/(maxIn - minIn) + minOut);
+	
+}

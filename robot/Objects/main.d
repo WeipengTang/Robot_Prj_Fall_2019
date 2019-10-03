@@ -20,3 +20,4 @@
 .\objects\main.o: UART.h
 .\objects\main.o: utilities.h
 .\objects\main.o: Beeper.h
+.\objects\main.o: TaskManager.h

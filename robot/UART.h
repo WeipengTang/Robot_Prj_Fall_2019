@@ -38,7 +38,7 @@ uint32_t framer_32bit(char *buffer);
 uint16_t framer_16bit(char *buffer);
 uint8_t framer_8bit(char *buffer);
 void update_instruction(void);
-void UART_receive_frame(char *buffer);
+void UART_ack(char cmd_num);
 
 
 #endif

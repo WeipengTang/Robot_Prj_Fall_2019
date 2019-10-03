@@ -7,7 +7,6 @@
 
 volatile uint32_t beep_cycle = 5000;
 
-
 void beeperInit(void){
 	
 	//***********************Configure Pin PA5 and timer****************************
@@ -107,3 +106,5 @@ void TIM8_CC_IRQHandler(void){
 	}
 	
 }
+
+

@@ -10,6 +10,7 @@
 volatile uint32_t left_period_width = 1000;
 static volatile uint32_t left_last_captured = 0;
 
+
 volatile uint32_t right_period_width = 1000;
 static volatile uint32_t right_last_captured = 0;
 
