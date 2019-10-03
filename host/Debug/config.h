@@ -64,7 +64,7 @@
 #define LT_OBJDIR ".libs/"
 
 /* Name of package */
-#define PACKAGE "host_control"
+#define PACKAGE "pthread"
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT ""
@@ -76,7 +76,7 @@
 #define PACKAGE_STRING "host_control 0.1"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "host_control"
+#define PACKAGE_TARNAME "pthread"
 
 /* Define to the home page for this package. */
 #define PACKAGE_URL ""

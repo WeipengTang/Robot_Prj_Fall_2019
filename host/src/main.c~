@@ -2,36 +2,43 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <pthread.h>
+#include "utilities.h"
 #include "serial.h"
 #include "joystick.h"
 
+extern Robot_control current_robot_control;
+pthread_mutex_t lock;
+
 int main (void){
 
+	current_robot_control.servo_angle = 60;
+	current_robot_control.stepper_target = 90;
+	current_robot_control.stepper_speed = 2;
+	current_robot_control.DCM_Left_DIR = 1;
+	current_robot_control.DCM_Left_SPD = 0;
+	current_robot_control.DCM_Right_DIR = 1;
+	current_robot_control.DCM_Right_SPD = 0;
+	current_robot_control.LCD_index = 0;
+
+	pthread_t monitor_thread;
+    if (pthread_mutex_init(&lock, NULL) != 0)
+    {
+        printf("\n mutex init failed\n");
+        return 1;
+    }
+
+	int err = pthread_create(&monitor_thread, NULL, &com_manager, NULL);
+	if(err != 0)
+		printf("failed to create a thread.\n");
+	
 	UARTInit();
 	joystick_init ();
-	//char out_buf[100];
-	//char in_buf[100];
+	
 
 	joystick_loop ();
-
-	
-/*
-	while(1){
-		printf ("Enter a string: ");
-		fgets (out_buf, 100, stdin);
-		UARTSend(out_buf, strlen(out_buf));
-		
-		sleep (1);
-
-		printf ("reading ...\n");
-		memset (in_buf, 0, 100);
-		UARTReceive (in_buf, 100);
-		
-		printf ("got this from port: >>%s<<\n", in_buf);
-	}
-	// close the file handle for the serial device
-*/
-	
+	pthread_join(monitor_thread, NULL);
+	pthread_mutex_destroy(&lock);
 	
 
 	return 0;

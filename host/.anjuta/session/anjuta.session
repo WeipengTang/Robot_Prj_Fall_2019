@@ -1,14 +1,14 @@
 [Anjuta]
-Maximized=1
-Geometry=1853x920+67+27
+Geometry=1389x681+438+174
 
 [File Loader]
-Files=../../src/serial.c#17%%%../../src/main.c#4%%%../../src/serial.h#8%%%../../src/utilities.c#22%%%../../src/utilities.h#6%%%../../src/control_functions.c#260%%%../../src/control_functions.h#14%%%../../src/joystick.c#135
+Files=../../src/main.c#23%%%../../src/serial.h#7%%%../../src/serial.c#206%%%../../src/control_functions.c#60%%%../../src/utilities.h#23%%%../../src/joystick.c#153%%%../../src/utilities.c#3
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
 
 [Execution]
+Program arguments=%%%-pthread
 Program uri=../../Debug/src/host_control
 Run in terminal=2
 Working directories=../../.
@@ -18,13 +18,13 @@ Shortcut=host//src//host_control
 Expand=host%%%host//src%%%host//src//host_control
 
 [Debugger]
-Breakpoint=1:../../src/control_functions.c:45:0:%%%1:../../src/control_functions.c:56:0:
+Breakpoint=1:../../src/serial.c:177:0:%%%1:../../src/serial.c:181:0:%%%1:../../src/serial.c:170:0:
 Stop at beginning=2
 
 [Build]
 Configuration list=1:Default:%%%1:Debug:Debug%%%1:Profiling:Profiling%%%1:Optimized:Optimized%%%1:MinGW32:MinGW32
 Selected Configuration=Debug
-BuildArgs/Default=--enable-maintainer-mode
-BuildArgs/Debug=--enable-maintainer-mode 'CFLAGS=-g -O0' 'CXXFLAGS=-g -O0' 'JFLAGS=-g -O0' 'FFLAGS=-g -O0'
+BuildArgs/Default=--enable-maintainer-mode -pthread
+BuildArgs/Debug=--enable-maintainer-mode 'CFLAGS=-g -O0' 'CXXFLAGS=-g -O0' 'JFLAGS=-g -O0' 'FFLAGS=-g -O0' 'LDFLAGS=-pthread'
 BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' 'JFLAGS=-g -pg' 'FFLAGS=-g -pg'
 BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'

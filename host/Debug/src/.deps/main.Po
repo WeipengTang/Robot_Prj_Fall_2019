@@ -50,7 +50,14 @@ main.o: /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/main.c \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /usr/include/strings.h \
+ /usr/include/strings.h /usr/include/pthread.h /usr/include/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/cpu-set.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/utilities.h \
  /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h \
  /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/joystick.h \
  /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
@@ -192,6 +199,26 @@ main.o: /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/main.c \
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
 /usr/include/strings.h:
+
+/usr/include/pthread.h:
+
+/usr/include/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+/home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/utilities.h:
 
 /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h:
 

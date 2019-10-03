@@ -19,6 +19,8 @@ INTLTOOL_FILES = intltool-extract.in \
 EXTRA_DIST = \
 	$(INTLTOOL_FILES)
 
+AM_LDFLAGS = -pthread 
+
 DISTCLEANFILES = intltool-extract \
 	intltool-merge \
 	intltool-update \

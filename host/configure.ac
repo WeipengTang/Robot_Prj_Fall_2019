@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl Created by Anjuta application wizard.
 
-AC_INIT(host_control, 0.1)
+AC_INIT(host_control, 0.1, , pthread)
 
 AC_CONFIG_HEADERS([config.h])
 
@@ -34,6 +34,8 @@ LT_INIT
 
 
 
+
+PKG_CHECK_MODULES(PTHREAD_STUBS,pthread-stubs)
 
 AC_OUTPUT([
 Makefile
