@@ -7,7 +7,7 @@
 
 void ServoInit(void);
 void servoPosition(uint32_t angle);
-uint32_t mapValue(uint32_t minIn, uint32_t maxIn, uint32_t minOut, uint32_t maxOut, uint32_t value);
+
 
 
 #endif

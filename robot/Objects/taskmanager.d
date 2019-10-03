@@ -1,0 +1,15 @@
+.\objects\taskmanager.o: TaskManager.c
+.\objects\taskmanager.o: TaskManager.h
+.\objects\taskmanager.o: stm32f303xe.h
+.\objects\taskmanager.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
+.\objects\taskmanager.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\taskmanager.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\taskmanager.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\taskmanager.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\taskmanager.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
+.\objects\taskmanager.o: C:\Keil_v5\ARM\PACK\Keil\STM32F3xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F3xx\Include\system_stm32f3xx.h
+.\objects\taskmanager.o: utilities.h
+.\objects\taskmanager.o: SysTick.h
+.\objects\taskmanager.o: LCD.h
+.\objects\taskmanager.o: DCMotor.h
+.\objects\taskmanager.o: UART.h

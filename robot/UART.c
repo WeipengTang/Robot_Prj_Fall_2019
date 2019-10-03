@@ -13,11 +13,15 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <string.h>
 
+extern int32_t right_speed;
+extern int32_t left_speed;
 extern volatile uint32_t servo_angle_info;
 extern volatile Instruction current_instructions;
 static uint8_t USART1_Buffer_Rx[MAX_UART_BUFSIZ];
 static volatile uint32_t Rx1_Counter = 0;
+volatile uint8_t command_num;
 volatile uint8_t input_frame[INPUT_FRAME_SIZE]; //1st byte: 1 - special command  0 - data
 																 //2nd byte: type of data
 																 //					 1 - stepper motor target angle
@@ -203,47 +207,50 @@ void receive(USART_TypeDef *USARTx, uint8_t *buffer, volatile uint32_t *pCounter
 }
 
 void update_instruction(void){
-		char temp_buffer[50];
+		char temp_buffer[50];		
 		UARTString(temp_buffer);
+		char temp_num[5];
+		uint32_t i=3;
+		uint32_t j=0;
+		uint32_t k=0;
+		int32_t data_array[8];
+		
+		command_num = (uint8_t)temp_num[1];
 	
 		switch(temp_buffer[0]){		
-			case 0: //data
-				switch(temp_buffer[1]){			
-					case 1: //stepper motor target angle
-						current_instructions.stepper_target = (uint32_t)(framer_32bit(temp_buffer));
-						break;
-					case 2: //stepper motor action speed
-						current_instructions.stepper_speed = (uint8_t)(framer_8bit(temp_buffer));
-						break;
-					case 3: //left DC motor direction
-						current_instructions.DCM_Left_DIR = (int8_t)(framer_8bit(temp_buffer));
-						break;
-					case 4: //left DC motor speed
-						current_instructions.DCM_Left_SPD = (uint32_t)(framer_32bit(temp_buffer));
-						break;
-					case 5: //right DC motor direction
-						current_instructions.DCM_Right_DIR = (int8_t)(framer_8bit(temp_buffer));
-						break;
-					case 6:	//right DC motor speed
-						current_instructions.DCM_Right_SPD = (uint32_t)(framer_32bit(temp_buffer));
-						break;
-					case 7: //servo target angle
-						servoPosition((uint32_t)(framer_32bit(temp_buffer)));
-						break;
-				}
+			case 33: //data
+				do{
+					if(temp_buffer[i] == '$'){
+							j=i+1;
+							do{
+								j++;
+							}while(temp_buffer[j]!='$');
+							memcpy(temp_num, temp_buffer+i+1, j-i-1);
+							temp_num[j-i-1] = '\0';
+							data_array[k] = atoi(temp_num);
+							k++;
+						}
+					i = j;
+				}while(k<8);
+				
+				current_instructions.stepper_target = (uint32_t)data_array[0];
+				current_instructions.stepper_speed = (uint8_t)data_array[1];
+				current_instructions.servo_angle = (uint32_t)data_array[2];
+				current_instructions.DCM_Left_DIR = (int8_t)data_array[3];
+				current_instructions.DCM_Left_SPD = (uint32_t)data_array[4];
+				current_instructions.DCM_Right_DIR = (int8_t)data_array[5];
+				current_instructions.DCM_Right_SPD = (uint32_t)data_array[6];
+				current_instructions.LCD_index = (uint8_t)data_array[7];
+				servoPosition(current_instructions.servo_angle);
+				
+
+				
 				break;
-			case 1: //special command
-				switch((int)(temp_buffer[1])){				
-					case 1: //stepper motor homming
+			case 34: //special command
+				switch((int)(temp_buffer[2])){				
+					case 1: //stepper motor homming					
 						stepperHoming();
-						UARTprintf("$%d$%d$%d$%d$%d$%d$%d$%d\n", servo_angle_info, 
-																									 current_instructions.stepper_target, 
-																									 current_instructions.stepper_speed,
-																									 current_instructions.DCM_Left_DIR,
-																									 current_instructions.DCM_Left_SPD,
-																									 current_instructions.DCM_Right_DIR,
-																									 current_instructions.DCM_Right_SPD,
-																									 current_instructions.LCD_index);
+						UARTprintf("finished\n");
 						break;
 					case 2: //increment LCD content index
 						//LCD content list:
@@ -263,8 +270,16 @@ void update_instruction(void){
 			default:
 				break;
 		}
+		UARTprintf("$%d$%d$%d$%d$%d$%d$%d$%d$\n", servo_angle_info, 
+																					 current_instructions.stepper_target, 
+																					 current_instructions.DCM_Left_DIR,
+																					 left_speed,
+																					 current_instructions.DCM_Right_DIR,
+																					 right_speed,
+																					 current_instructions.LCD_index,
+																					 temp_buffer[1]);
 		Rx1_Counter = 0; //clear receive buffer
-		//UARTprintf("Confirmed.\n");
+		
 }
 uint32_t framer_32bit(char *buffer){
 	uint32_t temp = (uint32_t)(((buffer[2]<<24)|(buffer[3]<<16)|(buffer[4]<<8)|buffer[5])&0xFFFFFFFF);
@@ -313,10 +328,14 @@ void UARTString(char *cx){
 		}
 		(*cx) = '\0';
 }
-void UART_receive_frame(char *buffer){
-	uint8_t i;
-	for(i=0; i<6; i++){
-		buffer[i] = UARTDequeue();
-	}
-	
+void UART_ack(char cmd_num){
+//	char ack_buf[4];
+//	ack_buf[0] = 0x6;
+//	ack_buf[1] = cmd_num;
+//	ack_buf[2] = '\n';
+//	ack_buf[3] = 0x0;
+//	
+//	UARTprintf("%s", ack_buf);
+	UARTputc(0x6);
+	UARTputc(cmd_num);
 }

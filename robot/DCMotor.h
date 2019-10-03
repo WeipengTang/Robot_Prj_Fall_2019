@@ -24,6 +24,8 @@
 #define MOTOR_DIRA_RIGHT_PIN 0
 #define MOTOR_DIRB_RIGHT_PIN 1
 
+#define MAX_VANE_FREQ 1620
+#define MIN_VANE_FREQ 1030
 //pin assignment
 //DCM1_PWM	--PA8	--TIM1_CH1
 //DCM1_DIRA	--PA0

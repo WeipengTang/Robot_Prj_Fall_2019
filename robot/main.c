@@ -12,6 +12,7 @@
 #include "UART.h"
 #include "utilities.h"
 #include "Beeper.h"
+#include "TaskManager.h"
 
 #define EnableInterrupts __asm__("ISB ; CPSIE I") 
 #define DisableInterrupts __asm__("CPSID I") 
@@ -27,9 +28,11 @@ extern volatile int32_t UDS_pulse_width;			//location to check the ultrasonic di
 
 #define LEFT_SPD_CMPS 197.352													//multiplier to calculate the left encoder speed
 extern volatile uint32_t left_period_width;			//location to read the left encoder period width
+int32_t left_speed;															//real left motor speed
 
 #define RIGHT_SPD_CMPS 197.352												//multiplier to calculate the right encoder speed
 extern volatile uint32_t right_period_width;		//location to read the right encoder period width
+int32_t right_speed;                             //real right motor speed
 
 volatile Instruction current_instructions;								//declare global instruction set for all actions
 
@@ -39,6 +42,11 @@ int main(void){
 	SysTick_Initialize (719);															// interrup interval is 10us. 10us * 72MHz - 1 = 719. if clock is 68MHz, this number should be 679.
 	//flashLEDInit();																				//Initiate the flashing LED at PA5	
 	LCDinit();																						//Initate LCD display at PB12, PB13, PB4, PB5, PB6, PB7	
+	LCDclear();
+	LCDprintf("Hello World!");
+	Delay_ms(1000);
+	
+	
 	StepperMotorInit();																		//Initate Stepper Motor
 	ServoInit();																					//Initate RC Servo
 	DCMotorInit();																				//Initiate DC Motor
@@ -46,7 +54,8 @@ int main(void){
 	EncoderInit();																					//Initiate Encoders
 	UARTInit();																						//Initiate the RS232 communication
 	limitSwitchInit();																		//Inititate the limit switches
-	beeperInit();																					//Initiate the beeper
+	//beeperInit();																					//Initiate the beeper
+	TaskManagerInit();																			//Initiate task manager for periodic tasks
 	
 	//Constants Initiation
 	servoPosition(60);																		//default servo position
@@ -58,12 +67,13 @@ int main(void){
 	current_instructions.DCM_Right_SPD = 0;							//default right DC motor speed
 	current_instructions.LCD_index = 0;                  //default LCD content index
 	
-
-	
-	LCDclear();
-	LCDprintf("Hello World!");
-	Delay_ms(1000);
-	while(1);
+	while(1){
+		left_speed = period_width_to_speed(current_instructions.DCM_Left_DIR, left_period_width);
+		right_speed = period_width_to_speed(current_instructions.DCM_Right_DIR, right_period_width);
+		LCDclear();		
+		LCDprintf("L SPD: %d\nR SPD: %d", left_speed, right_speed);
+		for(uint32_t i = 0; i < 0x0008FFFF; i++);
+	}
 	
 }
 
@@ -76,3 +86,5 @@ int main(void){
 //USART1_IRQHandler() -- RS232
 //TIM8_CC_IRQHandler() -- beeper
 //SysTick_Handler() -- delay
+//TIM2 - servo PWM
+//TIM1 - DC motor PWM
