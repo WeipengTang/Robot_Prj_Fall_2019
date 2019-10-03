@@ -70,10 +70,10 @@ am__make_running_with_option = \
   test $$has_opt = yes
 am__make_dryrun = (target_option=n; $(am__make_running_with_option))
 am__make_keepgoing = (target_option=k; $(am__make_running_with_option))
-pkgdatadir = $(datadir)/host_control
-pkgincludedir = $(includedir)/host_control
-pkglibdir = $(libdir)/host_control
-pkglibexecdir = $(libexecdir)/host_control
+pkgdatadir = $(datadir)/pthread
+pkgincludedir = $(includedir)/pthread
+pkglibdir = $(libdir)/pthread
+pkglibexecdir = $(libexecdir)/pthread
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -225,7 +225,7 @@ INTLTOOL__v_MERGE_ = $(INTLTOOL__v_MERGE_$(AM_DEFAULT_VERBOSITY))
 INTLTOOL__v_MERGE_0 = @echo "  ITMRG " $@;
 INTL_MACOSX_LIBS = 
 LD = /usr/bin/ld -m elf_x86_64
-LDFLAGS = 
+LDFLAGS = -pthread
 LIBOBJS = 
 LIBS = 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
@@ -246,18 +246,23 @@ OBJDUMP = objdump
 OBJEXT = o
 OTOOL = 
 OTOOL64 = 
-PACKAGE = host_control
+PACKAGE = pthread
 PACKAGE_BUGREPORT = 
 PACKAGE_NAME = host_control
 PACKAGE_STRING = host_control 0.1
-PACKAGE_TARNAME = host_control
+PACKAGE_TARNAME = pthread
 PACKAGE_URL = 
 PACKAGE_VERSION = 0.1
 PATH_SEPARATOR = :
+PKG_CONFIG = /usr/bin/pkg-config
+PKG_CONFIG_LIBDIR = 
+PKG_CONFIG_PATH = 
 POFILES = 
 POSUB = po
 PO_IN_DATADIR_FALSE = 
 PO_IN_DATADIR_TRUE = 
+PTHREAD_STUBS_CFLAGS = 
+PTHREAD_STUBS_LIBS = 
 RANLIB = ranlib
 SED = /bin/sed
 SET_MAKE = 
@@ -323,7 +328,9 @@ top_builddir = ..
 top_srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
-	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
+	-DPACKAGE_SRC_DIR=\""$(srcdir). \
+	$(pthread-stubs_CFLAGS). \
+	$(pthread-stubs_CFLAGS)"\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\"
 
 AM_CFLAGS = \
@@ -342,7 +349,9 @@ host_control_SOURCES = \
 	utilities.h
 
 host_control_LDFLAGS = 
-host_control_LDADD = 
+host_control_LDADD = \
+	$(pthread-stubs_LIBS)
+
 all: all-am
 
 .SUFFIXES:

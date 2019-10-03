@@ -18,7 +18,7 @@
 # INTLTOOL_MAKEFILE
 
 GETTEXT_PACKAGE = host_control
-PACKAGE = host_control
+PACKAGE = pthread
 VERSION = 0.1
 
 SHELL = /bin/bash

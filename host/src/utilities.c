@@ -1,6 +1,8 @@
 #include <stdlib.h>
+#include "utilities.h"
 
-
+Robot_info current_robot_info;
+Robot_control current_robot_control;
 void data_32bit_convertor(unsigned char *instruction, int value){
 	instruction[2] = (unsigned char)(((value&0xFF000000)>>24)&0xFF);
 	instruction[3] = (unsigned char)(((value&0x00FF0000)>>16)&0xFF);

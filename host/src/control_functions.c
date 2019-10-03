@@ -14,81 +14,52 @@ static unsigned int right_spd = 0;
 static int right_dir = 1;
 static int left_js = 0; //store previous forward/backward raw value (-32767, 32767)
 static int right_js = 0;//store previous left/right raw value (-32767, 32767)
+extern Robot_control current_robot_control;
+extern Robot_info current_robot_info;
 
-
-void camera_down(void){
-		
-	unsigned char instruction_frame[8];
+void camera_down(void){		      
 	servo_position += SERVO_MOVE_INCMT;
 	if(servo_position > MAX_SERVO_ANGLE){
 		servo_position = MAX_SERVO_ANGLE;
 	}
-	instruction_frame[0] = (unsigned char)0;
-	instruction_frame[1] = (unsigned char)7;
-	data_32bit_convertor (instruction_frame, servo_position);
-	instruction_frame[6] = (unsigned char)0;
-	instruction_frame[7] = (unsigned char)0xA;
 	printf("camera up %d\n", servo_position);
-	UARTSend (instruction_frame, sizeof(instruction_frame));
+	//send_camera_data (7, servo_position);
+	current_robot_control.servo_angle = servo_position;
 }
 
 void camera_up(void){
-	unsigned char instruction_frame[8];
 	servo_position -= SERVO_MOVE_INCMT;
 	if(servo_position < MIN_SERVO_ANGLE){
 		servo_position = MIN_SERVO_ANGLE;
 	}
-	instruction_frame[0] = (unsigned char)0;
-	instruction_frame[1] = (unsigned char)7;
-	data_32bit_convertor (instruction_frame, servo_position);
-	instruction_frame[6] = (unsigned char)0;
-	instruction_frame[7] = (unsigned char)0xA;
 	printf("camera down %d\n", servo_position);
-	UARTSend (instruction_frame, sizeof(instruction_frame));
+	//send_camera_data (7, servo_position);
+	current_robot_control.servo_angle = servo_position;
 
 }
 void camera_left(void){
-	unsigned char instruction_frame[8];
 	stepper_position += STP_MOVE_INCMT;
 	if(stepper_position > 180){
 		stepper_position = 180;
 	}
-	instruction_frame[0] = (unsigned char)0;
-	instruction_frame[1] = (unsigned char)1;
-	data_32bit_convertor (instruction_frame, stepper_position);
-	instruction_frame[6] = (unsigned char)0;
-	instruction_frame[7] = (unsigned char)0xA;
 	printf("camera left %d\n", stepper_position);
-	UARTSend (instruction_frame, sizeof(instruction_frame));
+	//send_camera_data (1, stepper_position);
+	current_robot_control.stepper_target = stepper_position;
 }
 
 void camera_right(void){
-	unsigned char instruction_frame[8];
 	stepper_position -= STP_MOVE_INCMT;
 	if((int)stepper_position < 0){
 		stepper_position = 0;
 	}
-	instruction_frame[0] = (unsigned char)0;
-	instruction_frame[1] = (unsigned char)1;
-	data_32bit_convertor (instruction_frame, stepper_position);
-	instruction_frame[6] = (unsigned char)0;
-	instruction_frame[7] = (unsigned char)0xA;
 	printf("camera right %d\n", stepper_position);
-	UARTSend (instruction_frame, sizeof(instruction_frame));
+	//send_camera_data (1, stepper_position);
+	current_robot_control.stepper_target = stepper_position;
 }
 void stepper_home(void){
-	unsigned char instruction_frame[8];
-	unsigned char buffer[100];
-	instruction_frame[0] = (unsigned char)1;
-	instruction_frame[1] = (unsigned char)1;
-	instruction_frame[6] = (unsigned char)0;
-	instruction_frame[7] = (unsigned char)0xA;
-	printf("stepper homing\n");
-	UARTSend (instruction_frame, sizeof(instruction_frame));
-	memset (buffer, 0, 100);
-	UARTReceive (buffer, 100);
-	//sync the system
-	robot_sync (buffer);
+	robot_move_simple (1, -32767);
+	current_robot_control.command_option = 1;
+	current_robot_control.stepper_target = 90;
 
 }
 void robot_move_simple(int dir, int value){
@@ -97,8 +68,10 @@ void robot_move_simple(int dir, int value){
 	float spd_difference;
 
 	//determine direction
-	left_dir = dir;
-	right_dir = dir;
+	//left_dir = dir;
+	//right_dir = dir;
+	current_robot_control.DCM_Left_DIR = dir;
+	current_robot_control.DCM_Right_DIR = dir;
 
 	//store forward/backward value into left_js
 	left_js = dir*value/2;
@@ -119,11 +92,13 @@ void robot_move_simple(int dir, int value){
 	}
 
 	//send data to robot
-	send_motor_data();
+	//send_motor_data();
+	current_robot_control.DCM_Left_SPD = left_spd;
+	current_robot_control.DCM_Right_SPD = right_spd;
 	
 }
 
-void robot_forward_backward(int left_value){
+/*void robot_forward_backward(int left_value){
 	left_value = (-1)*left_value; //to set left joystick: forward-positive
 	if((left_value-left_js > LEFT_JS_THRESHOLD) || (left_value-left_js < (-1)*LEFT_JS_THRESHOLD)) {
 
@@ -172,7 +147,7 @@ void robot_forward_backward(int left_value){
 		send_motor_data();
 			
 	}
-}
+}*/
 void robot_left_right(int right_value){
 	if((right_value-right_js > RIGHT_JS_THRESHOLD) || (right_value-right_js < (-1)*RIGHT_JS_THRESHOLD)) {
 
@@ -193,13 +168,17 @@ void robot_left_right(int right_value){
 		
 		//determine motors' directions
 		if(left_js < 0){
-			left_dir = -1;
-			right_dir = -1;
+			//left_dir = -1;
+			//right_dir = -1;
+			current_robot_control.DCM_Left_DIR = -1;
+			current_robot_control.DCM_Right_DIR = -1;
 			local_left_js = (-1)*left_js;
 		}
 		else{
-			left_dir = 1;
-			right_dir = 1;
+			//left_dir = 1;
+			//right_dir = 1;
+			current_robot_control.DCM_Left_DIR = 1;
+			current_robot_control.DCM_Right_DIR = 1;
 			local_left_js = left_js;
 		}
 
@@ -217,11 +196,11 @@ void robot_left_right(int right_value){
 		}
 
 		//send data to robot
-		send_motor_data();
-			
+		//send_motor_data();
+		current_robot_control.DCM_Left_SPD = left_spd;
+		current_robot_control.DCM_Right_SPD = right_spd;	
 	}
 }
-
 
 void robot_sync(unsigned char *buffer){
 	unsigned char temp[5];
@@ -241,15 +220,26 @@ void robot_sync(unsigned char *buffer){
 	
 }
 
+void send_camera_data(unsigned int opt_num, int pos_value){
+	unsigned char instruction_frame[FRAME_SIZE];
+	instruction_frame[0] = (unsigned char)0;
+	instruction_frame[1] = (unsigned char)opt_num;
+	data_32bit_convertor (instruction_frame, pos_value);
+	instruction_frame[7] = (unsigned char)0;
+	instruction_frame[8] = (unsigned char)0xA;
+	UARTSend (instruction_frame, sizeof(instruction_frame));
+}
+
+
 void send_motor_data(void){
 	//generate 4 control commands according to left_dir, right_dir, left_spd, right_spd
 	//send left motor dir
-	unsigned char instruction_frame[8];
+	unsigned char instruction_frame[FRAME_SIZE];
 	instruction_frame[0] = (unsigned char)0;	
 	instruction_frame[1] = (unsigned char)3;
 	data_32bit_convertor (instruction_frame, left_dir);
-	instruction_frame[6] = (unsigned char)0;
-	instruction_frame[7] = (unsigned char)0xA;
+	instruction_frame[7] = (unsigned char)0;
+	instruction_frame[8] = (unsigned char)0xA;
 	printf("left dir: %d\n", left_dir);
 	UARTSend (instruction_frame, sizeof(instruction_frame));
 
@@ -257,8 +247,8 @@ void send_motor_data(void){
 	instruction_frame[0] = (unsigned char)0;	
 	instruction_frame[1] = (unsigned char)5;
 	data_32bit_convertor (instruction_frame, right_dir);
-	instruction_frame[6] = (unsigned char)0;
-	instruction_frame[7] = (unsigned char)0xA;
+	instruction_frame[7] = (unsigned char)0;
+	instruction_frame[8] = (unsigned char)0xA;
 	printf("right dir: %d\n", right_dir);
 	UARTSend (instruction_frame, sizeof(instruction_frame));
 
@@ -266,8 +256,8 @@ void send_motor_data(void){
 	instruction_frame[0] = (unsigned char)0;	
 	instruction_frame[1] = (unsigned char)4;
 	data_32bit_convertor (instruction_frame, left_spd);
-	instruction_frame[6] = (unsigned char)0;
-	instruction_frame[7] = (unsigned char)0xA;
+	instruction_frame[7] = (unsigned char)0;
+	instruction_frame[8] = (unsigned char)0xA;
 	printf("left speed: %d\n", left_spd);
 	UARTSend (instruction_frame, sizeof(instruction_frame));
 
@@ -275,11 +265,11 @@ void send_motor_data(void){
 	instruction_frame[0] = (unsigned char)0;	
 	instruction_frame[1] = (unsigned char)6;
 	data_32bit_convertor (instruction_frame, right_spd);
-	instruction_frame[6] = (unsigned char)0;
-	instruction_frame[7] = (unsigned char)0xA;
+	instruction_frame[7] = (unsigned char)0;
+	instruction_frame[8] = (unsigned char)0xA;
 	printf("right speed: %d\n", right_spd);
 	UARTSend (instruction_frame, sizeof(instruction_frame));
 
-	sleep(0.2);
+	//sleep(0.2);
 		
 }

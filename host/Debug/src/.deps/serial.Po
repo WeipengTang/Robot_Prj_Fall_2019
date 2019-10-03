@@ -55,8 +55,15 @@ serial.o: /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.c \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
- /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
- /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h /usr/include/pthread.h \
+ /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/cpu-set.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h \
+ /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/utilities.h
 
 /usr/include/stdc-predef.h:
 
@@ -190,4 +197,24 @@ serial.o: /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.c \
 
 /usr/include/x86_64-linux-gnu/bits/getopt_core.h:
 
+/usr/include/pthread.h:
+
+/usr/include/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
 /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h:
+
+/home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/utilities.h:

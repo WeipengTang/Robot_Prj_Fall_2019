@@ -4,7 +4,9 @@
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
-	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
+	-DPACKAGE_SRC_DIR=\""$(srcdir). \
+	$(pthread-stubs_CFLAGS). \
+	$(pthread-stubs_CFLAGS)"\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\"
 
 AM_CFLAGS =\
@@ -26,5 +28,6 @@ host_control_SOURCES = \
 
 host_control_LDFLAGS = 
 
-host_control_LDADD = 
+host_control_LDADD =  \
+	$(pthread-stubs_LIBS)
 

@@ -17,7 +17,10 @@
 #include <termios.h>
 #include <string.h>
 #include <unistd.h>
+#include <pthread.h>
+#include <time.h>
 #include "serial.h"
+#include "utilities.h"
 
 /*
  * int RS232Init (char *device, int baudrate);
@@ -34,6 +37,8 @@
  */
 
 static int fd;
+extern pthread_mutex_t lock;
+extern Robot_control current_robot_control;
 
 int UARTInit(void){
 	
@@ -109,19 +114,104 @@ int RS232Init (char *device, int baudrate){
 }	/* end RS232Init */
 
 void UARTSend(unsigned char *buffer, int len){
+
 	write(fd, buffer, len);
 }
 
-void UARTReceive(unsigned char *buffer, int maxLen){
+int UARTReceive(unsigned char *buffer, int maxLen){
 	int x = 0;
-		while (x < maxLen) {
-			char ch;
-			if (read (fd, &ch, 1) != -1) {
-				if (ch == '\n')
-					break;
-				buffer[x++] = ch;
+	char ch;
+
+		do{		
+			if (read (fd, &ch, 1) == -1) {
+				return (-1);
 			}
-		}	
+			else
+				buffer[x++] = ch;
+			
+		}while((ch !=  '\n') && (x <maxLen));
+	return 0;
 }
+
+int check_ack(unsigned char instr_num){
+	unsigned char buf[3];
+	buf[2] = 0;
+	char ch;
+	read(fd, &ch, 1);
+	buf[0] = (unsigned char)ch;
+	read(fd, &ch, 1);
+	buf[1] = (unsigned char)ch;
+
+	//printf("ack message: %s\n", buf);
+	if((buf[0] == 0x06) && (buf[1] == instr_num)){
+		printf("ack passed.\n");
+		return 0;
+	}
+	else
+		return -1;
+
+}
+void *com_manager(void *arg){
+	unsigned int i;
+	static unsigned int count = 33;
+	while(1){
+		ping_robot (count);
+		for(i=0; i<(0x00FFFFFF);i++);
+		verify_robot_ping (count);
+		count++;
+		if(count >= 128)
+			count=33;
+		for(i=0; i<(0x0FFFFFFF);i++);
+	}
+	
+}
+void ping_robot(unsigned int num){
+	char out_buffer[100];
+	memset(out_buffer, 0, 100);
+	if(current_robot_control.command_option == 0){
+	out_buffer[0] = (char)33;
+	out_buffer[1] = (char)num;//command number
+	out_buffer[2] = (char)33;//command option
+	sprintf(out_buffer+3, "$%d$%d$%d$%d$%d$%d$%d$%d$", current_robot_control.stepper_target,
+	        								  current_robot_control.stepper_speed,
+	        								  current_robot_control.servo_angle,
+	        								  current_robot_control.DCM_Left_DIR,
+	        								  current_robot_control.DCM_Left_SPD,
+	        								  current_robot_control.DCM_Right_DIR,
+	        								  current_robot_control.DCM_Right_SPD,
+	        								  current_robot_control.LCD_index);
+	out_buffer[strlen(out_buffer)+1] = '\n';
+	UARTSend ((unsigned char*)out_buffer, (strlen(out_buffer)+2));
+	}
+	else if(current_robot_control.command_option == 1){
+	out_buffer[0] = (char)34;
+	out_buffer[1] = (char)num;//command number
+	out_buffer[2] = (char)current_robot_control.command_option;
+	out_buffer[3] = '\0';
+	out_buffer[4] = '\n';
+	current_robot_control.command_option = 0;	
+	UARTSend ((unsigned char*)out_buffer, (strlen(out_buffer)+2));
+	sleep(12);	
+	}
+	
+
+}
+unsigned int verify_robot_ping(unsigned int num){
+	unsigned char buffer[100];
+	static int error_check=0;
+	//int i;
+	memset(buffer, 0, 100);
+	if(UARTReceive (buffer, 100)!=0)
+		error_check++;
+	else
+		error_check = 0;
+	printf("%s", buffer);
+	if(error_check > 5)
+		printf("Robot disconnected\n");
+	
+	return 0;
+}
+
+
 
 

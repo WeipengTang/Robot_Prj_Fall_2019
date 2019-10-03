@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <linux/joystick.h>
 #include <unistd.h>
+#include <time.h>
 #include "joystick.h"
 #include "control_functions.h"
 
@@ -115,9 +116,19 @@ void joystick_init(void)
 
 void joystick_loop(void){
 	/* This loop will exit if the controller is unplugged. */
+	/*time_t rawtime;
+	struct tm * timeinfo;
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	printf("Current local time and date: %s", asctime(timeinfo));*/
+
+	
 	
     while (read_event(js, &event) == 0)
-    {
+    {	
+
         switch (event.type)
         {
             case JS_EVENT_BUTTON:
@@ -140,7 +151,7 @@ void joystick_loop(void){
 							stepper_home ();
 							break;
 						case 12:
-							robot_move_simple (1, 0);
+							robot_move_simple (1, -32767);
 							break;
 						default:
 							break;
@@ -150,14 +161,11 @@ void joystick_loop(void){
             case JS_EVENT_AXIS:
                 axis = get_axis_state(&event, axes);
                 if (axis < 3)
-                    //printf("Axis %zu at (%6d, %6d)\n", axis, axes[axis].x, axes[axis].y);
 					switch(axis){
 						case 0: //left joystick
-							//robot_forward_backward(axes[axis].y);
 							robot_left_right(axes[axis].x);
 							break;
 						case 1: //right joystick x-axis and L2
-							//	robot_left_right(axes[axis].y);
 							robot_move_simple (-1, axes[axis].x);
 							break;
 						case 2: //right joystick y-axis and R2
@@ -170,6 +178,7 @@ void joystick_loop(void){
             default:
                 break;
         }
+		//sleep(0.2);
     }
 	
 	
