@@ -13,7 +13,7 @@
 #define PRESCALER_NUM 899
 #define ARR_NUM 7999
 #define PRESCALER_TIM3 899																	
-#define ARR_TIM3 799
+#define ARR_TIM3 3999
 #define MCU_CLK 72000000
 
 //#define FEEDBACK_SCALE_FACTOR 16777216
@@ -111,7 +111,7 @@ void DCMotorInit(void){
 	//set pre-scaler.72MHz/(899+1) = 80KHz.
 	TIM3->PSC = PRESCALER_TIM3;
 	
-	//set counter period.80KHz/(799+1) = 100Hz.																																					 
+	//set counter period.80KHz/(3999+1) = 50Hz.																																					 
 	TIM3->ARR = ARR_TIM3;
 	
 	//Select Channel 1 as output																													   
@@ -209,35 +209,35 @@ void TIM3_IRQHandler(void){
 }
 uint32_t speedControl(uint32_t target_speed, uint32_t PWM, int32_t current_period_ticks){
 	
-//	if(target_speed > 0){
-//		int32_t vane_frequency = 720000/current_period_ticks;
-//		
-//		if(vane_frequency <= MIN_VANE_FREQ)
-//			vane_frequency = MIN_VANE_FREQ;
-//		if(vane_frequency >= MAX_VANE_FREQ)
-//			vane_frequency = MAX_VANE_FREQ;
-//		
-//		int32_t current_speed = mapValue(MIN_VANE_FREQ, MAX_VANE_FREQ, 0, 100, vane_frequency);
-//		
-//		int32_t current_error = target_speed - current_speed;
+	if(target_speed > 0){
+		int32_t vane_frequency = 720000/current_period_ticks;
+		
+		if(vane_frequency <= MIN_VANE_FREQ)
+			vane_frequency = MIN_VANE_FREQ;
+		if(vane_frequency >= MAX_VANE_FREQ)
+			vane_frequency = MAX_VANE_FREQ;
+		
+		int32_t current_speed = mapValue(MIN_VANE_FREQ, MAX_VANE_FREQ, 0, 100, vane_frequency);
+		
+		int32_t current_error = target_speed - current_speed;
 
-//		if(current_error > 100)
-//			current_error = 100;
-//		if(current_error < -100)
-//			current_error = -100;
-//		
-//		if((PWM+current_error)<=100)
-//			PWM += current_error;
-//		else if((PWM+current_error)>100)
-//			PWM = 100;
-//		else
-//			PWM = 0;
-//	}else
-//	
-//	PWM = 0;
-//	
-//	return PWM;
-	return target_speed;
+		if(current_error > 100)
+			current_error = 100;
+		if(current_error < -100)
+			current_error = -100;
+		
+		if((PWM+current_error)<=100)
+			PWM += current_error;
+		else if((PWM+current_error)>100)
+			PWM = 100;
+		else
+			PWM = 0;
+	}else
+	
+	PWM = 0;
+	
+	return PWM;
+//return target_speed;
 }
 
 
