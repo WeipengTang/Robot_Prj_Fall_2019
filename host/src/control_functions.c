@@ -56,12 +56,14 @@ void camera_right(void){
 	//send_camera_data (1, stepper_position);
 	current_robot_control.stepper_target = stepper_position;
 }
+
 void stepper_home(void){
 	robot_move_simple (1, -32767);
 	current_robot_control.command_option = 1;
 	current_robot_control.stepper_target = 90;
 
 }
+
 void robot_move_simple(int dir, int value){
 	value += 32767;//move the raw value range from (-32767, 32767) to (0, 65534)
 
@@ -98,56 +100,7 @@ void robot_move_simple(int dir, int value){
 	
 }
 
-/*void robot_forward_backward(int left_value){
-	left_value = (-1)*left_value; //to set left joystick: forward-positive
-	if((left_value-left_js > LEFT_JS_THRESHOLD) || (left_value-left_js < (-1)*LEFT_JS_THRESHOLD)) {
 
-		//process raw data
-		float spd_difference;
-		int local_right_js;
-
-		//round extreme value to the end
-		if(left_value > 32000)
-			left_value = MAX_JS_VALUE;
-		else if(left_value < -32000)
-			left_value = (-1)*MAX_JS_VALUE;
-		if(left_value < LEFT_JS_THRESHOLD && left_value > (-1)*LEFT_JS_THRESHOLD)
-			left_value = 0;
-
-		//store forward/backward raw value
-		left_js = left_value;
-		
-		
-		//determine motors' directions
-		if(left_value < 0){
-			left_dir = -1;
-			right_dir = -1;
-			left_value = (-1)*left_value;
-		}
-		else{
-			left_dir = 1;
-			right_dir = 1;
-		}
-
-		left_spd = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, left_value);
-		right_spd = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, left_value);
-
-		if(right_js < 0){
-			local_right_js = (-1)*(right_js);
-			spd_difference = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, local_right_js);
-			left_spd = left_spd*(1-spd_difference/100);
-		}
-		else if(right_js > 0){
-			local_right_js = right_js;
-			spd_difference = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, local_right_js);
-			right_spd = right_spd*(1-spd_difference/100);
-		}
-
-		//send data to robot
-		send_motor_data();
-			
-	}
-}*/
 void robot_left_right(int right_value){
 	if((right_value-right_js > RIGHT_JS_THRESHOLD) || (right_value-right_js < (-1)*RIGHT_JS_THRESHOLD)) {
 

@@ -133,7 +133,7 @@ int UARTReceive(unsigned char *buffer, int maxLen){
 	return 0;
 }
 
-int check_ack(unsigned char instr_num){
+/*int check_ack(unsigned char instr_num){
 	unsigned char buf[3];
 	buf[2] = 0;
 	char ch;
@@ -150,18 +150,18 @@ int check_ack(unsigned char instr_num){
 	else
 		return -1;
 
-}
+}*/
 void *com_manager(void *arg){
 	unsigned int i;
 	static unsigned int count = 33;
 	while(1){
 		ping_robot (count);
-		for(i=0; i<(0x00FFFFFF);i++);
+		for(i=0; i<(0x00EFFFFF);i++);
 		verify_robot_ping (count);
 		count++;
 		if(count >= 128)
 			count=33;
-		for(i=0; i<(0x0FFFFFFF);i++);
+		for(i=0; i<(0x02FFFFFF);i++);
 	}
 	
 }
@@ -191,7 +191,7 @@ void ping_robot(unsigned int num){
 	out_buffer[4] = '\n';
 	current_robot_control.command_option = 0;	
 	UARTSend ((unsigned char*)out_buffer, (strlen(out_buffer)+2));
-	sleep(12);	
+	sleep(15);	
 	}
 	
 
