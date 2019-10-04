@@ -205,12 +205,71 @@ unsigned int verify_robot_ping(unsigned int num){
 		error_check++;
 	else
 		error_check = 0;
-	printf("%s", buffer);
+	update_robot_info(unsigned char* buffer);
+	void print_info_ts(void);
+
+	//printf("%s", buffer);
+
 	if(error_check > 5)
 		printf("Robot disconnected\n");
 	
 	return 0;
 }
+
+
+void update_robot_info(unsigned char* buffer){
+		//char temp_buffer[50];		
+		//UARTString(temp_buffer);
+		char temp_num[5];
+		int i=3;
+		int j=0;
+		int k=0;
+		int data_array[8];
+		
+		do{
+			if(buffer[i] == '$')
+			{
+				j=i+1;
+				do{
+					j++;
+
+				}while(buffer[j]!='$');
+
+				memcpy(temp_num, temp_buffer+i+1, j-i-1);
+				temp_num[j-i-1] = '\0';
+				data_array[k] = atoi(temp_num);
+				k++;
+			}
+				i = j;
+		}while(k<8);
+				
+				Robot_info.servo_angle = (int)data_array[0];
+				Robot_info.stepper_angle = (int)data_array[1];
+				Robot_info.left_direction = (int)data_array[2];
+				Robot_info.left_speed = (int)data_array[3];
+				Robot_info.right_direction = (int)data_array[4];
+				Robot_info.right_speed = (int)data_array[5];
+				Robot_info.LCD_index = (int)data_array[6];
+				Robot_info.sync_num = (int)data_array[7];
+				
+
+}
+
+void print_info_ts(void)
+{
+clear_sc(); 
+printf("Stepper Position: %d\n",  Robot_info.stepper_angle);
+printf("Servo Angle: %d\n",  Robot_info.servo_angle);
+printf("Left Motor Speed: %d\n",  Robot_info.left_speed);
+printf("Left Motor Direction: %d\n",  Robot_info.left_direction);
+printf("Right Motor Speed: %d\n",  Robot_info.right_Speed);
+printf("Right Motor Direction: %d\n",  Robot_info.right_direction);
+printf("Command Number: %d\n",  Robot_info.sync_num);
+
+}
+
+
+
 
 
 

@@ -9,4 +9,8 @@ int check_ack(unsigned char instr_num);
 void *com_manager(void* arg);
 void ping_robot(unsigned int num);
 unsigned int verify_robot_ping(unsigned int num);
+void update_robot_info(unsigned char* buffer);
+void print_info_ts(void);
+
+
 #endif
