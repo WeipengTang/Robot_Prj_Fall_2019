@@ -248,7 +248,9 @@ void update_instruction(void){
 				break;
 			case 34: //special command
 				switch((int)(temp_buffer[2])){				
-					case 1: //stepper motor homming					
+					case 1: //stepper motor homming	
+						current_instructions.DCM_Left_SPD = 0;
+						current_instructions.DCM_Right_SPD = 0;
 						stepperHoming();
 						UARTprintf("finished\n");
 						break;

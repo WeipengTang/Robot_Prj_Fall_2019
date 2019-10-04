@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Nucleo_64.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Nucleo_64.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Thu Oct 03 18:00:45 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Fri Oct 04 13:22:07 2019
 <BR><P>
 <H3>Maximum Stack Usage =        344 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1305,8 +1305,8 @@ Global Symbols
 <P><STRONG><a name="[54]"></a>TIM20_CC_IRQHandler</STRONG> (Thumb, 100 bytes, Stack size 0 bytes, taskmanager.o(i.TIM20_CC_IRQHandler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f303xe.o(RESET)
 </UL>
-<P><STRONG><a name="[2a]"></a>TIM3_IRQHandler</STRONG> (Thumb, 88 bytes, Stack size 4 bytes, dcmotor.o(i.TIM3_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM3_IRQHandler &rArr; runDCMotor
+<P><STRONG><a name="[2a]"></a>TIM3_IRQHandler</STRONG> (Thumb, 88 bytes, Stack size 8 bytes, dcmotor.o(i.TIM3_IRQHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = TIM3_IRQHandler &rArr; speedControl &rArr; mapValue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;speedControl
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;runDCMotor
@@ -1460,7 +1460,8 @@ Global Symbols
 <P><STRONG><a name="[d2]"></a>mapValue</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, utilities.o(i.mapValue))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = mapValue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM4_IRQHandler
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;speedControl
+<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM4_IRQHandler
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;period_width_to_speed
 </UL>
 
@@ -1494,8 +1495,12 @@ Global Symbols
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_instruction
 </UL>
 
-<P><STRONG><a name="[d0]"></a>speedControl</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, dcmotor.o(i.speedControl))
-<BR><BR>[Called By]<UL><LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM3_IRQHandler
+<P><STRONG><a name="[d0]"></a>speedControl</STRONG> (Thumb, 110 bytes, Stack size 32 bytes, dcmotor.o(i.speedControl))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = speedControl &rArr; mapValue
+</UL>
+<BR>[Calls]<UL><LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mapValue
+</UL>
+<BR>[Called By]<UL><LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM3_IRQHandler
 </UL>
 
 <P><STRONG><a name="[ce]"></a>stepperExitParallel</STRONG> (Thumb, 64 bytes, Stack size 8 bytes, steppermotor.o(i.stepperExitParallel))
@@ -1515,7 +1520,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_instruction
 </UL>
 
-<P><STRONG><a name="[df]"></a>update_instruction</STRONG> (Thumb, 276 bytes, Stack size 128 bytes, uart.o(i.update_instruction))
+<P><STRONG><a name="[df]"></a>update_instruction</STRONG> (Thumb, 284 bytes, Stack size 128 bytes, uart.o(i.update_instruction))
 <BR><BR>[Stack]<UL><LI>Max Depth = 336 + Unknown Stack Size
 <LI>Call Chain = update_instruction &rArr; UARTprintf &rArr; vsnprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
