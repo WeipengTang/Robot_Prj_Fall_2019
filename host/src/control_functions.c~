@@ -57,7 +57,7 @@ void camera_right(void){
 	current_robot_control.stepper_target = stepper_position;
 }
 void stepper_home(void){
-	//robot_move_simple (1, 0);
+	robot_move_simple (1, -32767);
 	current_robot_control.command_option = 1;
 	current_robot_control.stepper_target = 90;
 
