@@ -103,7 +103,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_host_control_OBJECTS = main.$(OBJEXT) serial.$(OBJEXT) \
 	joystick.$(OBJEXT) utilities.$(OBJEXT) \
-	control_functions.$(OBJEXT)
+	control_functions.$(OBJEXT) com_manage.$(OBJEXT)
 host_control_OBJECTS = $(am_host_control_OBJECTS)
 host_control_DEPENDENCIES =
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -346,7 +346,9 @@ host_control_SOURCES = \
 	utilities.c \
 	control_functions.h \
 	control_functions.c \
-	utilities.h
+	utilities.h \
+	com_manage.c \
+	com_manage.h
 
 host_control_LDFLAGS = 
 host_control_LDADD = \
@@ -445,6 +447,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/com_manage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/control_functions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/joystick.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@

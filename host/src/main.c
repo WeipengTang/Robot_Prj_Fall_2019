@@ -6,6 +6,7 @@
 #include "utilities.h"
 #include "serial.h"
 #include "joystick.h"
+#include "com_manage.h"
 
 extern Robot_control current_robot_control;
 pthread_mutex_t lock;

@@ -24,7 +24,9 @@ host_control_SOURCES = \
 	utilities.c \
 	control_functions.h \
 	control_functions.c \
-	utilities.h
+	utilities.h \
+	com_manage.c \
+	com_manage.h
 
 host_control_LDFLAGS = 
 

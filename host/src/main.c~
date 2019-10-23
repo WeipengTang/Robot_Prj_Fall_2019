@@ -20,6 +20,7 @@ int main (void){
 	current_robot_control.DCM_Right_DIR = 1;
 	current_robot_control.DCM_Right_SPD = 0;
 	current_robot_control.LCD_index = 0;
+	current_robot_control.command_option = 0;
 
 	pthread_t monitor_thread;
     if (pthread_mutex_init(&lock, NULL) != 0)
