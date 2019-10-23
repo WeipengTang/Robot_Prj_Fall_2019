@@ -9,6 +9,8 @@
 #include <pthread.h>
 #include <time.h>
 #include "utilities.h"
+#include "serial.h"
+#include "socket_client.h"
 
 extern pthread_mutex_t lock;
 extern Robot_control current_robot_control;
@@ -46,7 +48,8 @@ void ping_robot(unsigned int num){
 	out_buffer[strlen(out_buffer)+1] = '\n';
 	//****************************************************************
 	//Need to replace this part with socket send
-	UARTSend ((unsigned char*)out_buffer, (strlen(out_buffer)+2));
+	//UARTSend ((unsigned char*)out_buffer, (strlen(out_buffer)+2));
+	socket_send(out_buffer, (strlen(out_buffer)+2));
 	}
 	//****************************************************************
 	else if(current_robot_control.command_option == 1){
@@ -58,7 +61,8 @@ void ping_robot(unsigned int num){
 	current_robot_control.command_option = 0;	
 	//****************************************************************
 	//Need to replace this part with socket send
-	UARTSend ((unsigned char*)out_buffer, (strlen(out_buffer)+2));
+	//UARTSend ((unsigned char*)out_buffer, (strlen(out_buffer)+2));
+	socket_send(out_buffer, (strlen(out_buffer)+2));
 	//****************************************************************
 	sleep(15);
 	
@@ -67,28 +71,29 @@ void ping_robot(unsigned int num){
 
 }
 unsigned int verify_robot_ping(unsigned int num){
-	unsigned char buffer[100];
+	char buffer[100];
 	
 	static int error_check=0;
 	//int i;
 	memset(buffer, 0, 100);
 	//***************************************************************
 	//Need to update this part with socket receive
-	if(UARTReceive (buffer, 100)!=0)
+	//if(UARTReceive (buffer, 100)!=0)
+	if(socket_receive(buffer, 100)<0)
 		error_check++;
 	else
 		error_check = 0;
 	//***************************************************************
 	
-	update_robot_info(buffer);
-	print_info_ts();
+	//update_robot_info(buffer);
+	//print_info_ts();
 
-	//printf("%s", buffer);
-	if(error_check > 5){
+	printf("%s", buffer);
+/*	if(error_check > 5){
 		printf("==============================================\n");
 		printf("Robot disconnected\n");
 		
-	}
+	}*/
 	
 	
 	return 0;
