@@ -14,7 +14,11 @@ AM_CFLAGS =\
 bin_PROGRAMS = rpi
 
 rpi_SOURCES = \
-	main.c
+	main.c \
+	serial.c \
+	serial.h \
+	utilities.c \
+	utilities.h
 
 rpi_LDFLAGS = 
 
