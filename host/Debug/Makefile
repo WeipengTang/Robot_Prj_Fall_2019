@@ -14,7 +14,7 @@
 
 
 
-VPATH = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host
+VPATH = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
     false; \
@@ -232,14 +232,14 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/missing aclocal-1.15
 ALL_LINGUAS = 
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = ar
-AUTOCONF = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/missing autoconf
-AUTOHEADER = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/missing autoheader
-AUTOMAKE = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/missing automake-1.15
+AUTOCONF = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/missing autoconf
+AUTOHEADER = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/missing autoheader
+AUTOMAKE = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/missing automake-1.15
 AWK = mawk
 CATALOGS = 
 CATOBJEXT = .gmo
@@ -290,10 +290,10 @@ LIPO =
 LN_S = ln -s
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/missing makeinfo
+MAKEINFO = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /bin/mkdir -p
-MKINSTALLDIRS = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/mkinstalldirs
+MKINSTALLDIRS = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
 MSGMERGE = /usr/bin/msgmerge
@@ -328,10 +328,10 @@ STRIP = strip
 USE_NLS = yes
 VERSION = 0.1
 XGETTEXT = /usr/bin/xgettext
-abs_builddir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/Debug
-abs_srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host
-abs_top_builddir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/Debug
-abs_top_srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host
+abs_builddir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/Debug
+abs_srcdir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host
+abs_top_builddir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/Debug
+abs_top_srcdir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
@@ -360,7 +360,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/install-sh
+install_sh = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/install-sh
 intltool__v_merge_options_ = $(intltool__v_merge_options_$(AM_DEFAULT_VERBOSITY))
 intltool__v_merge_options_0 = -q
 libdir = ${exec_prefix}/lib
@@ -377,12 +377,12 @@ psdir = ${docdir}
 runstatedir = ${localstatedir}/run
 sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
-srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host
+srcdir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host
 sysconfdir = ${prefix}/etc
 target_alias = 
 top_build_prefix = 
 top_builddir = .
-top_srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host
+top_srcdir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host
 SUBDIRS = src po
 dist_doc_DATA = \
 	README \
