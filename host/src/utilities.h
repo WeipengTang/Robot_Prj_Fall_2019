@@ -1,11 +1,15 @@
 #ifndef _UTILITIES_H_
 #define _UTILITIES_H_
 
+#define clear_sc() printf("\033[H\033[J")
+
 struct robot_info{
 	int stepper_angle;
 	int servo_angle;
 	int left_speed;
 	int right_speed;
+	int left_direction;
+	int right_direction;
 	int sync_num;
 	int LCD_index;
 };
@@ -29,4 +33,5 @@ typedef struct robot_control Robot_control;
 void data_32bit_convertor(unsigned char *instruction, int value);
 unsigned int mapValue(unsigned int minIn, unsigned int maxIn, unsigned int minOut, unsigned int maxOut, unsigned value);
 unsigned int abs_value(int value);
+int msleep(long msec);
 #endif
