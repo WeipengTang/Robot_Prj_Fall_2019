@@ -31,10 +31,10 @@ int main (void){
         return 1;
     }
 	
-	//UARTInit();
-	//joystick_init ();
+	UARTInit();
+	joystick_init ();
 	socket_client_init();
-	char input[100] = "";
+/*	char input[100] = "";
 	
 	while(1){
 		memset(input, 0, 100);
@@ -45,14 +45,14 @@ int main (void){
 		socket_send(input, (strlen (input) + 1));
 		socket_receive (input, 100);
 		printf("Message: %s\n", input);
-	}
-/*	int err = pthread_create(&monitor_thread, NULL, &com_manager, NULL);
+	}*/
+	int err = pthread_create(&monitor_thread, NULL, &com_manager, NULL);
 	if(err != 0)
 		printf("failed to create a thread.\n");
 
 	joystick_loop ();
 	pthread_join(monitor_thread, NULL);
-	pthread_mutex_destroy(&lock);*/
+	pthread_mutex_destroy(&lock);
 	
 
 	return 0;

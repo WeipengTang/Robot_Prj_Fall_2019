@@ -11,28 +11,31 @@
 #include "utilities.h"
 #include "serial.h"
 #include "socket_client.h"
+#define MAXINPUTLEN	4096
 
 extern pthread_mutex_t lock;
 extern Robot_control current_robot_control;
 extern Robot_info current_robot_info;
 
 void *com_manager(void *arg){
-	unsigned int i;
+	
 	static unsigned int count = 33;
 	while(1){
 		ping_robot (count);
-		for(i=0; i<(0x00EFFFFF);i++);
+		msleep(30);
+		//for(i=0; i<(0x000000FF);i++);
 		verify_robot_ping (count);
 		count++;
 		if(count >= 128)
 			count=33;
-		for(i=0; i<(0x06FFFFFF);i++);
+		//for(i=0; i<(0x06FFFFFF);i++);
+		msleep(300);
 	}
 	
 }
 void ping_robot(unsigned int num){
-	char out_buffer[100];
-	memset(out_buffer, 0, 100);
+	char out_buffer[MAXINPUTLEN];
+	memset(out_buffer, 0, MAXINPUTLEN);
 	if(current_robot_control.command_option == 0){
 	out_buffer[0] = (char)33;
 	out_buffer[1] = (char)num;//command number
@@ -71,29 +74,29 @@ void ping_robot(unsigned int num){
 
 }
 unsigned int verify_robot_ping(unsigned int num){
-	char buffer[100];
+	char buffer[MAXINPUTLEN];
 	
 	static int error_check=0;
 	//int i;
-	memset(buffer, 0, 100);
+	memset(buffer, 0, MAXINPUTLEN);
 	//***************************************************************
 	//Need to update this part with socket receive
 	//if(UARTReceive (buffer, 100)!=0)
-	if(socket_receive(buffer, 100)<0)
+	if(socket_receive(buffer, MAXINPUTLEN)<0)
 		error_check++;
 	else
 		error_check = 0;
 	//***************************************************************
 	
-	//update_robot_info(buffer);
-	//print_info_ts();
+	update_robot_info((unsigned char*)buffer);
+	print_info_ts();
 
-	printf("%s", buffer);
-/*	if(error_check > 5){
+	//printf("%s\n", buffer);
+	if(error_check > 5){
 		printf("==============================================\n");
 		printf("Robot disconnected\n");
 		
-	}*/
+	}
 	
 	
 	return 0;

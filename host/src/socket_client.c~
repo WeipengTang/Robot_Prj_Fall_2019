@@ -15,7 +15,7 @@ struct sockaddr_in serverMachine = { 0 };
 int udpSocket = 0;
 
 int socket_client_init(void){
-	char ip[100] = "192.168.1.106";
+	char ip[100] = "10.192.27.229";
 	int udpPort = 6000;
 	
 
@@ -60,7 +60,7 @@ int socket_send(char *buffer, int len){
 	size = sizeof (serverMachine);
 	status = sendto (udpSocket, buffer, len, 0, 
 		(struct sockaddr *) &serverMachine, size);
-	printf ("status: %d size: %d\n", status, size);
+	//printf ("status: %d size: %d\n", status, size);
 	if (status < 0) {
 		printf ("Error: sendto error (short write)\n");
 	}
