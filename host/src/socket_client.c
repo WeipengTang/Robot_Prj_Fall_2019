@@ -9,13 +9,13 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define MAXINPUTLEN	4096
-char input[MAXINPUTLEN] = "";
+
+//char input[MAXINPUTLEN] = "";
 struct sockaddr_in serverMachine = { 0 };
 int udpSocket = 0;
 
 int socket_client_init(void){
-	char ip[100] = "192.168.1.106";
+	char ip[100] = "10.192.27.229";
 	int udpPort = 6000;
 	
 
