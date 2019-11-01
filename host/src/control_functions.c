@@ -22,8 +22,8 @@ void camera_down(void){
 	if(servo_position > MAX_SERVO_ANGLE){
 		servo_position = MAX_SERVO_ANGLE;
 	}
-	printf("camera up %d\n", servo_position);
-	//send_camera_data (7, servo_position);
+	//printf("camera up %d\n", servo_position);
+
 	current_robot_control.servo_angle = servo_position;
 }
 
@@ -32,8 +32,8 @@ void camera_up(void){
 	if(servo_position < MIN_SERVO_ANGLE){
 		servo_position = MIN_SERVO_ANGLE;
 	}
-	printf("camera down %d\n", servo_position);
-	//send_camera_data (7, servo_position);
+	//printf("camera down %d\n", servo_position);
+
 	current_robot_control.servo_angle = servo_position;
 
 }
@@ -42,8 +42,8 @@ void camera_left(void){
 	if(stepper_position > 180){
 		stepper_position = 180;
 	}
-	printf("camera left %d\n", stepper_position);
-	//send_camera_data (1, stepper_position);
+	//printf("camera left %d\n", stepper_position);
+
 	current_robot_control.stepper_target = stepper_position;
 }
 
@@ -52,8 +52,8 @@ void camera_right(void){
 	if((int)stepper_position < 0){
 		stepper_position = 0;
 	}
-	printf("camera right %d\n", stepper_position);
-	//send_camera_data (1, stepper_position);
+	//printf("camera right %d\n", stepper_position);
+
 	current_robot_control.stepper_target = stepper_position;
 }
 

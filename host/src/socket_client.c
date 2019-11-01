@@ -8,6 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <fcntl.h>
 
 
 //char input[MAXINPUTLEN] = "";
@@ -40,6 +41,11 @@ int socket_client_init(void){
 		return 2;
 	}	
 
+	//Set the socket to non-blocking mode
+	int flags = fcntl(udpSocket, F_GETFL, 0);
+	fcntl(udpSocket, F_SETFL, O_NONBLOCK|flags);
+
+	
 	// zero out socket structures and fill
 	// in with details for our UDP server
 
@@ -54,7 +60,7 @@ int socket_client_init(void){
 }
 
 int socket_send(char *buffer, int len){
-	int status = 0;
+	ssize_t status = 0;
 	int size = 0;
 	
 	size = sizeof (serverMachine);
@@ -63,20 +69,23 @@ int socket_send(char *buffer, int len){
 	//printf ("status: %d size: %d\n", status, size);
 	if (status < 0) {
 		printf ("Error: sendto error (short write)\n");
+		return -1;
 	}
-	return status;
+	return size;
 
 }
 
 int socket_receive(char *buffer, int maxLen){
 
-	int size = 0;
+	ssize_t size = 0;
 	unsigned int serverLength = 0;
 	memset (buffer, 0, maxLen);
 	size = recvfrom (udpSocket, buffer, maxLen, 0, 
 		(struct sockaddr *) &serverMachine, &serverLength);
-	if (size < 0) {
+	//printf("receive size: %d\n", size);
+	if (size < 2) {
 		printf ("Error: recvfrom failure\n");
+		return -1;
 	}
 
 	return size;

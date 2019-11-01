@@ -1,31 +1,23 @@
 [Anjuta]
-Maximized=1
-Geometry=1853x920+67+27
+Geometry=1489x744+67+27
 
-[File Loader]
-Files=../../src/main.c#34%%%../../src/control_functions.c#66%%%../../src/utilities.h#36%%%../../src/joystick.c#159%%%../../src/utilities.c#54%%%../../src/socket_client.c#12%%%../../src/com_manage.c#89%%%../../src/socket_client.h#6
+[Execution]
+Run in terminal=2
+Working directories=../../.
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
 
-[Execution]
-Program arguments=%%%-pthread
-Program uri=../../Debug/src/host_control
-Run in terminal=2
-Working directories=../../.
-
 [Project Manager]
 Shortcut=host//src//host_control
-Expand=host%%%host//src%%%host//src//host_control
 
 [Build]
-Configuration list=1:Default:%%%1:Debug:Debug%%%1:Profiling:Profiling%%%1:Optimized:Optimized%%%1:MinGW32:MinGW32
+Configuration list=1:Default:%%%1:Debug:Debug%%%1:Profiling:Profiling%%%1:Optimized:Optimized
 Selected Configuration=Debug
-BuildArgs/Default=--enable-maintainer-mode -pthread
-BuildArgs/Debug=--enable-maintainer-mode 'CFLAGS=-g -O0' 'CXXFLAGS=-g -O0' 'JFLAGS=-g -O0' 'FFLAGS=-g -O0' 'LDFLAGS=-pthread'
+BuildArgs/Default=--enable-maintainer-mode
+BuildArgs/Debug=--enable-maintainer-mode 'CFLAGS=-g -O0' 'CXXFLAGS=-g -O0' 'JFLAGS=-g -O0' 'FFLAGS=-g -O0'
 BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' 'JFLAGS=-g -pg' 'FFLAGS=-g -pg'
 BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
 
 [Debugger]
-Breakpoint=1:../../src/serial.c:177:0:%%%1:../../src/serial.c:181:0:%%%1:../../src/serial.c:170:0:%%%1:../../src/serial.c:209:0:%%%1:../../src/serial.c:232:0:
 Stop at beginning=2

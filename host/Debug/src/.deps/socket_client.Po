@@ -65,7 +65,10 @@ socket_client.o: \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/arpa/inet.h \
  /usr/include/netdb.h /usr/include/rpc/netdb.h \
- /usr/include/x86_64-linux-gnu/bits/netdb.h
+ /usr/include/x86_64-linux-gnu/bits/netdb.h /usr/include/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+ /usr/include/x86_64-linux-gnu/bits/stat.h
 
 /usr/include/stdc-predef.h:
 
@@ -212,3 +215,11 @@ socket_client.o: \
 /usr/include/rpc/netdb.h:
 
 /usr/include/x86_64-linux-gnu/bits/netdb.h:
+
+/usr/include/fcntl.h:
+
+/usr/include/x86_64-linux-gnu/bits/fcntl.h:
+
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:
+
+/usr/include/x86_64-linux-gnu/bits/stat.h:
