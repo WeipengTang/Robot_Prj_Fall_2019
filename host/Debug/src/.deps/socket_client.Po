@@ -68,7 +68,12 @@ socket_client.o: \
  /usr/include/x86_64-linux-gnu/bits/netdb.h /usr/include/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
- /usr/include/x86_64-linux-gnu/bits/stat.h
+ /usr/include/x86_64-linux-gnu/bits/stat.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h
 
 /usr/include/stdc-predef.h:
 
@@ -223,3 +228,15 @@ socket_client.o: \
 /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:
 
 /usr/include/x86_64-linux-gnu/bits/stat.h:
+
+/usr/include/unistd.h:
+
+/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
+
+/usr/include/x86_64-linux-gnu/bits/environments.h:
+
+/usr/include/x86_64-linux-gnu/bits/confname.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_core.h:

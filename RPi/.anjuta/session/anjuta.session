@@ -2,7 +2,7 @@
 Geometry=1022x702+0+0
 
 [File Loader]
-Files=../../src/main.c#34%%%../../src/serial.c#120%%%../../src/serial.h#8%%%../../src/utilities.c#6%%%../../src/utilities.h#4
+Files=../../src/main.c#31%%%../../src/camera.c#71%%%../../src/camera.h#10%%%../../src/utilities.h#1
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
@@ -18,6 +18,7 @@ Shortcut=RPi//src
 Expand=RPi%%%RPi//src%%%RPi//src//rpi%%%RPi//dist_doc
 
 [Debugger]
+Breakpoint=1:../../src/camera.c:66:0:
 Stop at beginning=2
 
 [Build]

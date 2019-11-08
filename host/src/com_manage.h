@@ -6,7 +6,6 @@ void ping_robot(unsigned int num);
 unsigned int verify_robot_ping(unsigned int num);
 void update_robot_info(unsigned char* buffer);
 void print_info_ts(void);
-void request_image(void);
-void receive_image(void);
+
 
 #endif 

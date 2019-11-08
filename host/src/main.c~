@@ -31,7 +31,7 @@ int main (void){
         return 1;
     }
 	
-	UARTInit();
+	//UARTInit();
 	joystick_init ();
 	socket_client_init();
 /*	char input[100] = "";

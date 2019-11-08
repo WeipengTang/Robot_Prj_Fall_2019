@@ -42,7 +42,7 @@ static int fd;
 int UARTInit(void){
 	
 char port[] = "/dev/ttyUSB0";
-int baud = 9600;
+int baud = 115200;
 
 	printf ("attempt to open %s with baud rate %d\n", port, baud);
 	fd = RS232Init (port, baud);

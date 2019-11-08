@@ -31,21 +31,9 @@ int main (void){
         return 1;
     }
 	
-	//UARTInit();
 	joystick_init ();
 	socket_client_init();
-/*	char input[100] = "";
-	
-	while(1){
-		memset(input, 0, 100);
-		printf ("Enter a string to send to server: ");
-		fflush(stdout);
-		fgets (input, 100, stdin);
-		input[strcspn(input, "\n")] = 0;//get rid of the newline character 
-		socket_send(input, (strlen (input) + 1));
-		socket_receive (input, 100);
-		printf("Message: %s\n", input);
-	}*/
+
 	int err = pthread_create(&monitor_thread, NULL, &com_manager, NULL);
 	if(err != 0)
 		printf("failed to create a thread.\n");

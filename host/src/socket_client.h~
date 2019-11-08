@@ -4,8 +4,5 @@
 int socket_client_init(void);
 int socket_send(char *buffer, int len);
 int socket_receive (char *buffer, int maxLen);
-/*int socket_send(char *buffer, int len);
-int socket_receive(char *buffer, int maxLen);*/
-
 
 #endif

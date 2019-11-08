@@ -5,6 +5,15 @@
 
 Robot_info current_robot_info;
 Robot_control current_robot_control;
+
+int direction(int signed_speed){
+	if(signed_speed < 0)
+		return -1;
+	else
+		return 1;
+}
+
+
 void data_32bit_convertor(unsigned char *instruction, int value){
 	instruction[2] = (unsigned char)(((value&0xFF000000)>>24)&0xFF);
 	instruction[3] = (unsigned char)(((value&0x00FF0000)>>16)&0xFF);
@@ -13,7 +22,7 @@ void data_32bit_convertor(unsigned char *instruction, int value){
 
 }
 
-unsigned int mapValue(unsigned int minIn, unsigned int maxIn, unsigned int minOut, unsigned int maxOut, unsigned value){
+int mapValue(int minIn, int maxIn, int minOut, int maxOut, int value){
 	
 	//to ensure input not exceed input limits
 	if(value < minIn) value = minIn;

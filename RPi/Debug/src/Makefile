@@ -101,7 +101,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_rpi_OBJECTS = main.$(OBJEXT) serial.$(OBJEXT) utilities.$(OBJEXT)
+am_rpi_OBJECTS = main.$(OBJEXT) serial.$(OBJEXT) utilities.$(OBJEXT) \
+	camera.$(OBJEXT)
 rpi_OBJECTS = $(am_rpi_OBJECTS)
 rpi_DEPENDENCIES =
 AM_V_lt = $(am__v_lt_$(V))
@@ -332,7 +333,9 @@ rpi_SOURCES = \
 	serial.c \
 	serial.h \
 	utilities.c \
-	utilities.h
+	utilities.h \
+	camera.c \
+	camera.h
 
 rpi_LDFLAGS = 
 rpi_LDADD = 
@@ -429,6 +432,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/camera.Po
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/serial.Po
 include ./$(DEPDIR)/utilities.Po

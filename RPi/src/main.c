@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include <sys/uio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -20,18 +21,32 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <sys/wait.h>
 #include "serial.h"
 #include "utilities.h"
+#include "camera.h"
 
-#define MAXINPUTLEN		 4096
+#define MAXINPUTLEN 1024
+static int tcp = 0;
 char input[MAXINPUTLEN] = "";
+char output[MAXINPUTLEN] = "";
+char feedback[MAXINPUTLEN] = "";
+void send_image(void);
+
+void SigCatcher(int n){
+	wait3(NULL, WNOHANG, NULL);
+	signal(SIGCHLD, SigCatcher);
+}
 
 int main(int argc, char *argv[])
 {
 	int udpSocket = 0;
+	int client_sockfd;
 	int udpPort = 0;
 	int status = 0;
 	int size = 0;
+	int32_t image_size = 0;				//contains the size of the image
 	unsigned int clientLength = 0;
 	struct sockaddr_in serverMachine = { 0 };
 	struct sockaddr_in clientMachine = { 0 };
@@ -46,8 +61,10 @@ int main(int argc, char *argv[])
 		udpPort = atoi(argv[1]);
 
 	// allocate a socket
-
-	udpSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	if(tcp == 1)
+		udpSocket = socket(AF_INET, SOCK_STREAM, 0);
+	else
+		udpSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	if (udpSocket < 0) {
 		printf ("Error: can't get socket!\n");
 		return 2;
@@ -70,41 +87,83 @@ int main(int argc, char *argv[])
 			sizeof (serverMachine));
 	if (status < 0) {
 		printf ("Error: can't bind\n");
-		return 3;
+		return -1;
 	}	/* endif */
+	
+	clientLength = sizeof(clientMachine);
+	if(tcp == 1){
+		if (listen (udpSocket, 5) < 0) {
+			printf ("grrr, can't listen on socket\n");
+			close (udpSocket);
+			return -1;
+		}
 
+		client_sockfd = accept(udpSocket, (struct sockaddr *)&clientMachine, 
+				                   &clientLength);
+		if(client_sockfd<0){
+			printf("can't accept from client.\n");
+			return -1;
+		}
+	}
 	while (1) {
+		
 
-		clientLength = sizeof(clientMachine);
-		size = recvfrom (udpSocket, input, MAXINPUTLEN, 0, 
-			(struct sockaddr *) &clientMachine, &clientLength);
+		memset(input, 0, MAXINPUTLEN);
+		if(tcp == 1){
+			size = read(client_sockfd, input, MAXINPUTLEN);
+		}else{
+			size = recvfrom (udpSocket, input, MAXINPUTLEN, 0, 
+							(struct sockaddr *) &clientMachine, &clientLength);
+		}
 		if (size < 0) {
 			printf ("Error: recvfrom failure\n");
 			return 4;
-		}	
-
+		}
 		printf ("Client IP: %s\n", inet_ntoa(clientMachine.sin_addr));
 		printf ("Client Port: %u\n", clientMachine.sin_port);
 		printf ("ClientLength: %d size: %d Message received: %s\n", clientLength, size, input);
+
+		//process regular robot commands
 		UARTSend (input, size);
 
+		//get image file size
+		image_size = get_file_size();
+		memset(output, 0, MAXINPUTLEN);
+		sprintf(output, "$%d", image_size); //convert to a string
+
+		msleep(30);
+
+		//receive feedback from robot
+		memset(feedback, 0, MAXINPUTLEN);
+		UARTReceive (feedback, MAXINPUTLEN);
+
+		//cascade the feedback to the output
+		strncat(output, feedback, strlen(feedback)+1);
+		printf("Sent: %s\n", output);
+		size = strlen(output)+1;
+		//if size is small than 20, the message is incorrect
+		if(size > 20){
+			if(tcp==1){
+				status = write(client_sockfd, output, size);
+			}
+			else{
+				clientLength = sizeof (clientMachine);
+				status = sendto (udpSocket, output, size, 0, 
+								(struct sockaddr *) &clientMachine, clientLength);
+			}
+			if (status < 0) {
+				printf ("Error: sendto error\n");
+				return 5;
+			}	/* endif */
+			printf("Send size: %d\n", status);
+		}
+
 		
-		//for(i=0; i<(0x006FFFFF); i++);
-		msleep(50);
-		memset(input, 0, MAXINPUTLEN);
-		UARTReceive (input, MAXINPUTLEN);
-		size = strlen(input)+1;
-		clientLength = sizeof (clientMachine);
-		status = sendto (udpSocket, input, size, 0, 
-			(struct sockaddr *) &clientMachine, clientLength);
-		if (status < 0) {
-			printf ("Error: sendto error\n");
-			return 5;
-		}	/* endif */
 	}	/* end while loop */
 
 	/* as a server, this should never be reached */
 
 	return 0;
 }
+
 

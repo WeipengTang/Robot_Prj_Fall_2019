@@ -18,7 +18,9 @@ rpi_SOURCES = \
 	serial.c \
 	serial.h \
 	utilities.c \
-	utilities.h
+	utilities.h \
+	camera.c \
+	camera.h
 
 rpi_LDFLAGS = 
 

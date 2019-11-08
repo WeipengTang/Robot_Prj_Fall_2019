@@ -25,7 +25,15 @@ main.o: /home/pi/Documents/Robot_project/RPi/src/main.c \
  /usr/include/arm-linux-gnueabihf/bits/pthreadtypes.h \
  /usr/include/alloca.h \
  /usr/include/arm-linux-gnueabihf/bits/stdlib-float.h \
- /usr/include/string.h /usr/include/xlocale.h \
+ /usr/include/string.h /usr/include/xlocale.h /usr/include/signal.h \
+ /usr/include/arm-linux-gnueabihf/bits/signum.h \
+ /usr/include/arm-linux-gnueabihf/bits/siginfo.h \
+ /usr/include/arm-linux-gnueabihf/bits/sigaction.h \
+ /usr/include/arm-linux-gnueabihf/bits/sigcontext.h \
+ /usr/include/arm-linux-gnueabihf/asm/sigcontext.h \
+ /usr/include/arm-linux-gnueabihf/bits/sigstack.h \
+ /usr/include/arm-linux-gnueabihf/sys/ucontext.h \
+ /usr/include/arm-linux-gnueabihf/bits/sigthread.h \
  /usr/include/arm-linux-gnueabihf/sys/uio.h \
  /usr/include/arm-linux-gnueabihf/bits/uio.h \
  /usr/include/arm-linux-gnueabihf/sys/socket.h \
@@ -41,8 +49,13 @@ main.o: /home/pi/Documents/Robot_project/RPi/src/main.c \
  /usr/include/arm-linux-gnueabihf/bits/in.h /usr/include/arpa/inet.h \
  /usr/include/netdb.h /usr/include/rpc/netdb.h \
  /usr/include/arm-linux-gnueabihf/bits/netdb.h /usr/include/ctype.h \
+ /usr/include/unistd.h /usr/include/arm-linux-gnueabihf/bits/posix_opt.h \
+ /usr/include/arm-linux-gnueabihf/bits/environments.h \
+ /usr/include/arm-linux-gnueabihf/bits/confname.h /usr/include/getopt.h \
+ /usr/include/arm-linux-gnueabihf/sys/wait.h \
  /home/pi/Documents/Robot_project/RPi/src/serial.h \
- /home/pi/Documents/Robot_project/RPi/src/utilities.h
+ /home/pi/Documents/Robot_project/RPi/src/utilities.h \
+ /home/pi/Documents/Robot_project/RPi/src/camera.h
 
 /usr/include/stdc-predef.h:
 
@@ -114,6 +127,24 @@ main.o: /home/pi/Documents/Robot_project/RPi/src/main.c \
 
 /usr/include/xlocale.h:
 
+/usr/include/signal.h:
+
+/usr/include/arm-linux-gnueabihf/bits/signum.h:
+
+/usr/include/arm-linux-gnueabihf/bits/siginfo.h:
+
+/usr/include/arm-linux-gnueabihf/bits/sigaction.h:
+
+/usr/include/arm-linux-gnueabihf/bits/sigcontext.h:
+
+/usr/include/arm-linux-gnueabihf/asm/sigcontext.h:
+
+/usr/include/arm-linux-gnueabihf/bits/sigstack.h:
+
+/usr/include/arm-linux-gnueabihf/sys/ucontext.h:
+
+/usr/include/arm-linux-gnueabihf/bits/sigthread.h:
+
 /usr/include/arm-linux-gnueabihf/sys/uio.h:
 
 /usr/include/arm-linux-gnueabihf/bits/uio.h:
@@ -154,6 +185,20 @@ main.o: /home/pi/Documents/Robot_project/RPi/src/main.c \
 
 /usr/include/ctype.h:
 
+/usr/include/unistd.h:
+
+/usr/include/arm-linux-gnueabihf/bits/posix_opt.h:
+
+/usr/include/arm-linux-gnueabihf/bits/environments.h:
+
+/usr/include/arm-linux-gnueabihf/bits/confname.h:
+
+/usr/include/getopt.h:
+
+/usr/include/arm-linux-gnueabihf/sys/wait.h:
+
 /home/pi/Documents/Robot_project/RPi/src/serial.h:
 
 /home/pi/Documents/Robot_project/RPi/src/utilities.h:
+
+/home/pi/Documents/Robot_project/RPi/src/camera.h:

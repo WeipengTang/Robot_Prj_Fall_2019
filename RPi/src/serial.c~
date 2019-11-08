@@ -75,7 +75,7 @@ int RS232Init (char *device, int baudrate){
 	case 38400: baudrate = B38400; break;
 	case 57600: baudrate = B57600; break;
 	case 115200: baudrate = B115200; break;
-	default: baudrate = B9600;
+	default: baudrate = B115200;
 	}	/* end switch */
 
 	// open the device (in the /dev folder are devices)
@@ -112,12 +112,12 @@ int RS232Init (char *device, int baudrate){
 	return fd;
 }	/* end RS232Init */
 
-void UARTSend(unsigned char *buffer, int len){
+void UARTSend(char *buffer, int len){
 
 	write(fd, buffer, len);
 }
 
-int UARTReceive(unsigned char *buffer, int maxLen){
+int UARTReceive(char *buffer, int maxLen){
 	int x = 0;
 	char ch;
 

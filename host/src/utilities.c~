@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <time.h>
+#include <errno.h>
 #include "utilities.h"
 
 Robot_info current_robot_info;
@@ -12,7 +13,7 @@ void data_32bit_convertor(unsigned char *instruction, int value){
 
 }
 
-unsigned int mapValue(unsigned int minIn, unsigned int maxIn, unsigned int minOut, unsigned int maxOut, unsigned value){
+int mapValue(int minIn, int maxIn, int minOut, int maxOut, int value){
 	
 	//to ensure input not exceed input limits
 	if(value < minIn) value = minIn;

@@ -153,6 +153,9 @@ void joystick_loop(void){
 						case 12:
 							robot_move_simple (1, -32767);
 							break;
+						case 4:
+							camera_reset();
+							break;
 						default:
 							break;
 					}
