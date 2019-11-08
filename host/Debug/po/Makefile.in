@@ -23,10 +23,10 @@ VERSION = 0.1
 
 SHELL = /bin/bash
 
-srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/po
-top_srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host
+srcdir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/po
+top_srcdir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host
 top_builddir = ..
-VPATH = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/po
+VPATH = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/po
 
 prefix = /usr/local
 exec_prefix = ${prefix}
@@ -35,7 +35,7 @@ datarootdir = ${prefix}/share
 libdir = ${exec_prefix}/lib
 localedir = ${datarootdir}/locale
 subdir = po
-install_sh = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/install-sh
+install_sh = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/install-sh
 # Automake >= 1.8 provides $(MKDIR_P).
 # Until it can be supposed, use the safe fallback:
 mkdir_p = $(install_sh) -d

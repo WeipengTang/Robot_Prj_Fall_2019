@@ -1,5 +1,5 @@
 joystick.o: \
- /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/joystick.c \
+ /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/joystick.c \
  /usr/include/stdc-predef.h /usr/include/fcntl.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -71,8 +71,8 @@ joystick.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/joystick.h \
- /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/control_functions.h
+ /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/joystick.h \
+ /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/control_functions.h
 
 /usr/include/stdc-predef.h:
 
@@ -238,6 +238,6 @@ joystick.o: \
 
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
-/home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/joystick.h:
+/home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/joystick.h:
 
-/home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/control_functions.h:
+/home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/control_functions.h:

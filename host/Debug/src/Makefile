@@ -14,7 +14,7 @@
 
 
 
-VPATH = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src
+VPATH = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
     false; \
@@ -103,7 +103,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_host_control_OBJECTS = main.$(OBJEXT) serial.$(OBJEXT) \
 	joystick.$(OBJEXT) utilities.$(OBJEXT) \
-	control_functions.$(OBJEXT)
+	control_functions.$(OBJEXT) com_manage.$(OBJEXT) \
+	socket_client.$(OBJEXT)
 host_control_OBJECTS = $(am_host_control_OBJECTS)
 host_control_DEPENDENCIES =
 AM_V_lt = $(am__v_lt_$(V))
@@ -175,14 +176,14 @@ ETAGS = etags
 CTAGS = ctags
 am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/missing aclocal-1.15
 ALL_LINGUAS = 
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = ar
-AUTOCONF = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/missing autoconf
-AUTOHEADER = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/missing autoheader
-AUTOMAKE = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/missing automake-1.15
+AUTOCONF = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/missing autoconf
+AUTOHEADER = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/missing autoheader
+AUTOMAKE = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/missing automake-1.15
 AWK = mawk
 CATALOGS = 
 CATOBJEXT = .gmo
@@ -233,10 +234,10 @@ LIPO =
 LN_S = ln -s
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/missing makeinfo
+MAKEINFO = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /bin/mkdir -p
-MKINSTALLDIRS = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/mkinstalldirs
+MKINSTALLDIRS = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
 MSGMERGE = /usr/bin/msgmerge
@@ -271,10 +272,10 @@ STRIP = strip
 USE_NLS = yes
 VERSION = 0.1
 XGETTEXT = /usr/bin/xgettext
-abs_builddir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/Debug/src
-abs_srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src
-abs_top_builddir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/Debug
-abs_top_srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host
+abs_builddir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/Debug/src
+abs_srcdir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src
+abs_top_builddir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/Debug
+abs_top_srcdir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
@@ -303,7 +304,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/install-sh
+install_sh = ${SHELL} /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/install-sh
 intltool__v_merge_options_ = $(intltool__v_merge_options_$(AM_DEFAULT_VERBOSITY))
 intltool__v_merge_options_0 = -q
 libdir = ${exec_prefix}/lib
@@ -320,12 +321,12 @@ psdir = ${docdir}
 runstatedir = ${localstatedir}/run
 sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
-srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src
+srcdir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src
 sysconfdir = ${prefix}/etc
 target_alias = 
 top_build_prefix = ../
 top_builddir = ..
-top_srcdir = /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host
+top_srcdir = /home/a3154-18/Documents/Robot_Prj_Fall_2019/host
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir). \
@@ -346,7 +347,11 @@ host_control_SOURCES = \
 	utilities.c \
 	control_functions.h \
 	control_functions.c \
-	utilities.h
+	utilities.h \
+	com_manage.c \
+	com_manage.h \
+	socket_client.c \
+	socket_client.h
 
 host_control_LDFLAGS = 
 host_control_LDADD = \
@@ -445,10 +450,12 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/com_manage.Po
 include ./$(DEPDIR)/control_functions.Po
 include ./$(DEPDIR)/joystick.Po
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/serial.Po
+include ./$(DEPDIR)/socket_client.Po
 include ./$(DEPDIR)/utilities.Po
 
 .c.o:

@@ -6,6 +6,8 @@
 #include "utilities.h"
 #include "serial.h"
 #include "joystick.h"
+#include "com_manage.h"
+#include "socket_client.h"
 
 extern Robot_control current_robot_control;
 pthread_mutex_t lock;
@@ -28,14 +30,13 @@ int main (void){
         printf("\n mutex init failed\n");
         return 1;
     }
+	
+	joystick_init ();
+	socket_client_init();
 
 	int err = pthread_create(&monitor_thread, NULL, &com_manager, NULL);
 	if(err != 0)
 		printf("failed to create a thread.\n");
-	
-	UARTInit();
-	joystick_init ();
-	
 
 	joystick_loop ();
 	pthread_join(monitor_thread, NULL);

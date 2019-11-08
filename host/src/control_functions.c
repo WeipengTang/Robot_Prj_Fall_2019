@@ -12,18 +12,28 @@ static unsigned int left_spd = 0;
 static int left_dir = 1;
 static unsigned int right_spd = 0;
 static int right_dir = 1;
-static int left_js = 0; //store previous forward/backward raw value (-32767, 32767)
-static int right_js = 0;//store previous left/right raw value (-32767, 32767)
+static int forw_backw_value = 0; //store previous forward/backward raw value (-32767, 32767)
+static int left_right_value = 0;//store previous left/right raw value (-32767, 32767)
 extern Robot_control current_robot_control;
 extern Robot_info current_robot_info;
+int turn_mode = 1; //mode 0 -- not pivot
+				   //mode 1 -- pivot
+
+void camera_reset(void){
+	current_robot_control.servo_angle = 60;
+	current_robot_control.stepper_target=90;
+	servo_position = 60;
+	stepper_position = 90;
+
+}
 
 void camera_down(void){		      
 	servo_position += SERVO_MOVE_INCMT;
 	if(servo_position > MAX_SERVO_ANGLE){
 		servo_position = MAX_SERVO_ANGLE;
 	}
-	printf("camera up %d\n", servo_position);
-	//send_camera_data (7, servo_position);
+	//printf("camera up %d\n", servo_position);
+
 	current_robot_control.servo_angle = servo_position;
 }
 
@@ -32,8 +42,8 @@ void camera_up(void){
 	if(servo_position < MIN_SERVO_ANGLE){
 		servo_position = MIN_SERVO_ANGLE;
 	}
-	printf("camera down %d\n", servo_position);
-	//send_camera_data (7, servo_position);
+	//printf("camera down %d\n", servo_position);
+
 	current_robot_control.servo_angle = servo_position;
 
 }
@@ -42,8 +52,8 @@ void camera_left(void){
 	if(stepper_position > 180){
 		stepper_position = 180;
 	}
-	printf("camera left %d\n", stepper_position);
-	//send_camera_data (1, stepper_position);
+	//printf("camera left %d\n", stepper_position);
+
 	current_robot_control.stepper_target = stepper_position;
 }
 
@@ -52,8 +62,8 @@ void camera_right(void){
 	if((int)stepper_position < 0){
 		stepper_position = 0;
 	}
-	printf("camera right %d\n", stepper_position);
-	//send_camera_data (1, stepper_position);
+	//printf("camera right %d\n", stepper_position);
+
 	current_robot_control.stepper_target = stepper_position;
 }
 
@@ -75,21 +85,21 @@ void robot_move_simple(int dir, int value){
 	current_robot_control.DCM_Left_DIR = dir;
 	current_robot_control.DCM_Right_DIR = dir;
 
-	//store forward/backward value into left_js
-	left_js = dir*value/2;
+	//store forward/backward value into forw_backw_value
+	forw_backw_value = dir*value/2;
 
 	//determine motor speed without no speed difference
 	left_spd = mapValue(0, MAX_JS_VALUE*2, 0, 100, value);
 	right_spd = mapValue(0, MAX_JS_VALUE*2, 0, 100, value);
 
 	//adjust speed with speed difference
-	if(right_js < 0){
-		right_js = (-1)*(right_js);
-		spd_difference = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, right_js);
+	if(left_right_value < 0){
+		left_right_value = (-1)*(left_right_value);
+		spd_difference = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, left_right_value);
 		left_spd = left_spd*(1-spd_difference/100);
 	}
-	else if(right_js > 0){
-		spd_difference = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, right_js);
+	else if(left_right_value > 0){
+		spd_difference = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, left_right_value);
 		right_spd = right_spd*(1-spd_difference/100);
 	}
 
@@ -101,58 +111,83 @@ void robot_move_simple(int dir, int value){
 }
 
 
-void robot_left_right(int right_value){
-	if((right_value-right_js > RIGHT_JS_THRESHOLD) || (right_value-right_js < (-1)*RIGHT_JS_THRESHOLD)) {
+void robot_left_right(int js_value){
+	if((js_value-left_right_value > RIGHT_JS_THRESHOLD) || (js_value-left_right_value < (-1)*RIGHT_JS_THRESHOLD)) {
 
 		//process raw data
 		float spd_difference;
-		int local_left_js;
+		int local_forw_backw_value;
+		int local_left_spd, local_right_spd;
 
 		//round extreme value to the end
-		if(right_value > 32000)
-			right_value = MAX_JS_VALUE;
-		else if(right_value < -32000)
-			right_value = (-1)*MAX_JS_VALUE;
-		if(right_value < RIGHT_JS_THRESHOLD && right_value > (-1)*RIGHT_JS_THRESHOLD)
-			right_value = 0;
+		if(js_value > 32000)
+			js_value = MAX_JS_VALUE;
+		else if(js_value < -32000)
+			js_value = (-1)*MAX_JS_VALUE;
+		if(js_value < RIGHT_JS_THRESHOLD && js_value > (-1)*RIGHT_JS_THRESHOLD)
+			js_value = 0;
 
 		//store left/right value
-		right_js = right_value;
-		
-		//determine motors' directions
-		if(left_js < 0){
-			//left_dir = -1;
-			//right_dir = -1;
-			current_robot_control.DCM_Left_DIR = -1;
-			current_robot_control.DCM_Right_DIR = -1;
-			local_left_js = (-1)*left_js;
-		}
-		else{
-			//left_dir = 1;
-			//right_dir = 1;
-			current_robot_control.DCM_Left_DIR = 1;
-			current_robot_control.DCM_Right_DIR = 1;
-			local_left_js = left_js;
-		}
+		left_right_value = js_value;
 
-		left_spd = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, local_left_js);
-		right_spd = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, local_left_js);
+		if(turn_mode == 0){
+			//determine motors' directions
+			if(forw_backw_value < 0){
+				current_robot_control.DCM_Left_DIR = -1;
+				current_robot_control.DCM_Right_DIR = -1;
+				local_forw_backw_value = (-1)*forw_backw_value;
+			}
+			else{
+				current_robot_control.DCM_Left_DIR = 1;
+				current_robot_control.DCM_Right_DIR = 1;
+				local_forw_backw_value = forw_backw_value;
+			}
 
-		if(right_value < 0){
-			right_value = (-1)*(right_value);
-			spd_difference = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, right_value);
-			left_spd = left_spd*(1-spd_difference/100);
-		}
-		else if(right_value > 0){
-			spd_difference = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, right_value);
-			right_spd = right_spd*(1-spd_difference/100);
-		}
+			left_spd = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, local_forw_backw_value);
+			right_spd = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, local_forw_backw_value);
 
-		//send data to robot
-		//send_motor_data();
-		current_robot_control.DCM_Left_SPD = left_spd;
-		current_robot_control.DCM_Right_SPD = right_spd;	
-	}
+			if(js_value < 0){ //turn left
+				js_value = (-1)*(js_value);
+				spd_difference = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, js_value);
+				left_spd = left_spd*(1-spd_difference/100);
+			}
+			else if(js_value > 0){ //turn right
+				spd_difference = mapValue(MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, js_value);
+				right_spd = right_spd*(1-spd_difference/100);
+			}
+
+			//send data to robot
+			current_robot_control.DCM_Left_SPD = left_spd;
+			current_robot_control.DCM_Right_SPD = right_spd;	
+		}else if(turn_mode == 1){
+			//pivot mode
+			//calculate velocity(speed and direction) according to forw_backw_value and js_value, which both have range from -32767 to 32767
+			if(js_value <= 0){ //turn left
+				js_value = abs_value(js_value);
+				local_right_spd = mapValue(-1*MAX_JS_VALUE, MAX_JS_VALUE, -100, 100, forw_backw_value);
+				spd_difference = mapValue (MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, js_value);
+				local_left_spd = local_right_spd*(1-2*spd_difference/100);
+				
+			}
+			else if(js_value > 0){ //turn right
+				local_left_spd = mapValue(-1*MAX_JS_VALUE, MAX_JS_VALUE, -100, 100, forw_backw_value);
+				spd_difference = mapValue (MIN_JS_VALUE, MAX_JS_VALUE, 0, 100, js_value);
+				local_right_spd = local_left_spd*(1-2*spd_difference/100);
+			}
+			//update host values
+			left_spd = abs_value(local_left_spd);
+			left_dir = direction(local_left_spd);
+			right_spd = abs_value(local_right_spd);
+			right_dir = direction(local_right_spd);
+
+			//update control instruction
+			current_robot_control.DCM_Left_SPD = left_spd;
+			current_robot_control.DCM_Left_DIR = left_dir;
+			current_robot_control.DCM_Right_SPD = right_spd;
+			current_robot_control.DCM_Right_DIR = right_dir;
+
+		}
+	}//end of if - data test
 }
 
 void robot_sync(unsigned char *buffer){

@@ -11,6 +11,7 @@
 #define MIN_JS_VALUE 0
 #define MAX_JS_VALUE 32767
 
+void camera_reset(void);
 void camera_up(void);
 void camera_down(void);
 void camera_left(void);

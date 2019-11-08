@@ -151,7 +151,7 @@ void joystick_loop(void){
 							stepper_home ();
 							break;
 						case 12:
-							robot_move_simple (1, 0);
+							robot_move_simple (1, -32767);
 							break;
 						default:
 							break;

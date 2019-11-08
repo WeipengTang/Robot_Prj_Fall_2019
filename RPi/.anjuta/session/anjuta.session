@@ -1,0 +1,30 @@
+[Anjuta]
+Geometry=1022x702+0+0
+
+[File Loader]
+Files=../../src/main.c#31%%%../../src/camera.c#71%%%../../src/camera.h#10%%%../../src/utilities.h#1
+
+[Document Manager]
+bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+
+[Execution]
+Program arguments=6000
+Program uri=../../Debug/src/rpi%%%../../src/rpi%0D
+Run in terminal=2
+Working directories=../../.
+
+[Project Manager]
+Shortcut=RPi//src
+Expand=RPi%%%RPi//src%%%RPi//src//rpi%%%RPi//dist_doc
+
+[Debugger]
+Breakpoint=1:../../src/camera.c:66:0:
+Stop at beginning=2
+
+[Build]
+Configuration list=1:Default:%%%1:Debug:Debug%%%1:Profiling:Profiling%%%1:Optimized:Optimized%%%1:MinGW32:MinGW32
+Selected Configuration=Debug
+BuildArgs/Default=--enable-maintainer-mode -pthread
+BuildArgs/Debug=--enable-maintainer-mode 'CFLAGS=-g -O0' 'CXXFLAGS=-g -O0' 'JFLAGS=-g -O0' 'FFLAGS=-g -O0' 'LDFLAGS=-pthread'
+BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' 'JFLAGS=-g -pg' 'FFLAGS=-g -pg'
+BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'

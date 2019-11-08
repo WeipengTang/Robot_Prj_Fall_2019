@@ -1,5 +1,5 @@
 control_functions.o: \
- /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/control_functions.c \
+ /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/control_functions.c \
  /usr/include/stdc-predef.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -52,9 +52,9 @@ control_functions.o: \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
- /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h \
- /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/control_functions.h \
- /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/utilities.h
+ /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/serial.h \
+ /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/control_functions.h \
+ /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/utilities.h
 
 /usr/include/stdc-predef.h:
 
@@ -174,8 +174,8 @@ control_functions.o: \
 
 /usr/include/x86_64-linux-gnu/bits/getopt_core.h:
 
-/home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h:
+/home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/serial.h:
 
-/home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/control_functions.h:
+/home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/control_functions.h:
 
-/home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/utilities.h:
+/home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/utilities.h:

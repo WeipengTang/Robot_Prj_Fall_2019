@@ -1,0 +1,10 @@
+#ifndef _CAMERA_H_
+#define _CAMERA_H_
+#include <stdint.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+int32_t get_file_size(void);
+int32_t send_image_socket(int client_sockfd);
+
+#endif

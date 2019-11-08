@@ -1,4 +1,4 @@
-serial.o: /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.c \
+serial.o: /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/serial.c \
  /usr/include/stdc-predef.h /usr/include/x86_64-linux-gnu/sys/types.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -62,8 +62,8 @@ serial.o: /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.c \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
- /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h \
- /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/utilities.h
+ /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/serial.h \
+ /home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/utilities.h
 
 /usr/include/stdc-predef.h:
 
@@ -215,6 +215,6 @@ serial.o: /home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.c \
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
-/home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/serial.h:
+/home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/serial.h:
 
-/home/a3154-18/Desktop/Robot_Prj_Fall_2019/host/src/utilities.h:
+/home/a3154-18/Documents/Robot_Prj_Fall_2019/host/src/utilities.h:
